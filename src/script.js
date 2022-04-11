@@ -1,11 +1,15 @@
+// retrieve the Id called "video" from the html
 const video = document.getElementById('video')
 
+// call asset files for face detection, face landmark and face recognition using Promise obj
+// then start the video
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('assets/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('assets/models'),
     faceapi.nets.faceRecognitionNet.loadFromUri('assets/models')
 ]).then(startVideo)
 
+// function called to start video
 function startVideo() {
     navigator.getUserMedia({ video: {} },
         stream => video.srcObject = stream,
@@ -13,6 +17,8 @@ function startVideo() {
     )
 }
 
+// EventListener to play video and display it on the browser page with specified dimensions
+// resize the display screen size in the browser if necessary
 video.addEventListener('play', () => {
     const canvas = faceapi.createCanvasFromMedia(video)
     document.body.append(canvas)
