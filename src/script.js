@@ -1,3 +1,4 @@
+// load models and start video
 const video = document.getElementById('video')
 
 Promise.all([
@@ -13,6 +14,8 @@ function startVideo() {
     )
 }
 
+// EventListener to play video and display it on the browser page with specified dimensions
+// resize the display screen size in the browser if necessary
 video.addEventListener('play', () => {
     const canvas = faceapi.createCanvasFromMedia(video)
     document.body.append(canvas)
