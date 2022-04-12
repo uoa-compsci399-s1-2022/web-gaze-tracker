@@ -1,3 +1,7 @@
+// Faceapi eye points
+const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
+const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
+
 // Create video element
 const video = document.createElement("VIDEO");
 video.id = "video";
