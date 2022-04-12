@@ -1,15 +1,12 @@
-// retrieve the Id called "video" from the html
+// load models and start video
 const video = document.getElementById('video')
 
-// call asset files for face detection, face landmark and face recognition using Promise obj
-// then start the video
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('assets/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('assets/models'),
     faceapi.nets.faceRecognitionNet.loadFromUri('assets/models')
 ]).then(startVideo)
 
-// function called to start video
 function startVideo() {
     navigator.getUserMedia({ video: {} },
         stream => video.srcObject = stream,
