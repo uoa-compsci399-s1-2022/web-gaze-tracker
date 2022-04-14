@@ -49,8 +49,22 @@ video.addEventListener('play', () => {
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
+
+        // drawing detection and landmarks on clear canvas
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
         faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+
+        // extracting eye data
+        if (detections.length === 1) {
+            // could be useful later for drawing eyes on new canvas
+            // const leftEye = detections[0].landmarks.getLeftEye()
+            // const rightEye = detections[0].landmarks.getRightEye()
+
+            const leftEyeResized = resizedDetections[0].landmarks.getLeftEye()
+            const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
+        }
+
+        // console.log(leftEye, rightEye, leftEyeResized, rightEyeResized)
     }, 30)
 })
