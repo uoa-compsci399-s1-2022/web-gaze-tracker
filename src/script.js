@@ -35,10 +35,27 @@ function startVideo() {
 video.addEventListener('play', () => {
     // Create canvas for faceapi overlay
     const canvas = faceapi.createCanvasFromMedia(video)
+    canvas.id = "videoCanvas"
     canvas.style.position = "absolute"
     canvas.style.top = 0 + "px"
     canvas.style.left = 0 + "px"
     document.body.append(canvas)
+
+    // create second canvas for adding filters
+    const filteredCanvas = faceapi.createCanvasFromMedia(video)
+    filteredCanvas.id = "canvasOutput"
+    filteredCanvas.style.position = "absolute"
+    filteredCanvas.style.top = 0 + "px"
+    filteredCanvas.style.left = 751 + "px"
+    document.body.append(filteredCanvas)
+
+    // create third canvas for adding filters
+    const faceApiCanvas = faceapi.createCanvasFromMedia(video)
+    faceApiCanvas.id = "faceApiCanvas"
+    faceApiCanvas.style.position = "absolute"
+    faceApiCanvas.style.top = 560 + "px"
+    faceApiCanvas.style.left = 0 + "px"
+    document.body.append(faceApiCanvas)
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
@@ -49,11 +66,25 @@ video.addEventListener('play', () => {
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
-
+        
         // drawing detection and landmarks on clear canvas
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        faceapi.draw.drawDetections(canvas, resizedDetections)
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+        faceApiCanvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        faceapi.draw.drawDetections(faceApiCanvas, resizedDetections)
+        faceapi.draw.drawFaceLandmarks(faceApiCanvas, resizedDetections)
+        
+        // OpenCV adaptive threshold filter applied to the video 
+        const imgSrc = cv.imread('videoCanvas');
+        let dst = new cv.Mat();
+        cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0);
+        
+        cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2);
+        cv.imshow('canvasOutput', dst);
+        
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        imgSrc.delete();
+        dst.delete();
+        
+
 
         // extracting eye data
         if (detections.length === 1) {
