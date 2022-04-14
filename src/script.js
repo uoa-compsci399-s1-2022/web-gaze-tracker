@@ -3,15 +3,15 @@ const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
 const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
 
 // Create video element
-const video = document.createElement("VIDEO");
-video.id = "video";
+const video = document.createElement("VIDEO")
+video.id = "video"
 video.width = 750
 video.height = 560
 video.autoplay = true;
-video.defaultMuted = true;
-video.style.position = "absolute";
-video.style.top = 0 + "px";
-video.style.left = 0 + "px";
+video.defaultMuted = true
+video.style.position = "absolute"
+video.style.top = 0 + "px"
+video.style.left = 0 + "px"
 
 // Load video element and append to body
 video.load();
@@ -42,7 +42,7 @@ video.addEventListener('play', () => {
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
-    faceapi.matchDimensions(canvas, displaySize)
+    faceapi.matchDimensions(canvas, displaySize);
 
     // Main loop where face detection and eye tracking takes place.
     // Repeats every 30 ms
