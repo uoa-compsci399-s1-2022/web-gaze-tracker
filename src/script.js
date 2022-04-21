@@ -42,12 +42,14 @@ video.addEventListener('play', () => {
     document.body.append(canvas)
 
     // create second canvas for adding filters
-    const filteredCanvas = faceapi.createCanvasFromMedia(video)
-    filteredCanvas.id = "canvasOutput"
-    filteredCanvas.style.position = "absolute"
-    filteredCanvas.style.top = 0 + "px"
-    filteredCanvas.style.left = 751 + "px"
-    document.body.append(filteredCanvas)
+    const croppedCanvas = document.createElement("CANVAS")
+    croppedCanvas.id = "canvasOutput"
+    croppedCanvas.width = 500
+    croppedCanvas.height = 150
+    croppedCanvas.style.position = "absolute"
+    croppedCanvas.style.top = 0 + "px"
+    croppedCanvas.style.left = 750 + "px"
+    document.body.append(croppedCanvas)
 
     // create third canvas for adding filters
     // const faceApiCanvas = faceapi.createCanvasFromMedia(video)
@@ -66,51 +68,78 @@ video.addEventListener('play', () => {
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        
+
         // drawing detection and landmarks on clear canvas
         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
         // faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-        
+
         // OpenCV adaptive threshold filter applied to the video 
-        const imgSrc = cv.imread('videoCanvas');
-        let dst = new cv.Mat();
-        cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0);
-        
-        cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2);
-        cv.imshow('canvasOutput', dst);
-        
-        // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
-        imgSrc.delete();
-        dst.delete();
+        // const imgSrc = cv.imread('videoCanvas');
+        // let dst = new cv.Mat();
+        // cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0);
+
+        // cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2);
+        // cv.imshow('canvasOutput', dst);
+
+        // // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        // imgSrc.delete();
+        // dst.delete();
 
         // extracting eye data
         if (detections.length === 1) {
-            // could be useful later for drawing eyes on new canvas
-            // const leftEye = detections[0].landmarks.getLeftEye()
-            // const rightEye = detections[0].landmarks.getRightEye()
-
+            // only need right eye as camera is flipped
+            const rightEye = detections[0].landmarks.getRightEye()
+            // get resized points
             const leftEyeResized = resizedDetections[0].landmarks.getLeftEye()
             const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
 
-            console.log(leftEyeResized, rightEyeResized)
-            
+            // starting position 
+            // TODO: adjust starting postion and distance to fit both eyes properly in canvas
+            const startX = rightEye[0].x - 50
+            const startY = rightEye[0].y - 15
+
+            // get distance between both eyes
+            // multiply to get area around eyes as buffer
+            const disX = distance(rightEyeResized[0], leftEyeResized[3]) * 2.5
+            const disY = distance(rightEyeResized[1], leftEyeResized[4])
+
+            // draw cropped video onto canvas
+            croppedCanvas.getContext('2d').drawImage(
+                video,
+                startX, startY,                                 // start position
+                disX, disY,                                     // area to crop
+                0, 0,                                           // draw from point (0, 0) in the canvas,
+                croppedCanvas.width, croppedCanvas.height
+            )
+
             // leftEyeResized[0],change [X] the value later as it is not representetive, use max, min function instead to find the min and max coordinate in the array
             // also want to try drawing this matrix on canvas to see what we get
-            for (let x = parseInt(leftEyeResized[0].x); x < parseInt(leftEyeResized[3].x); x ++){
-                for (let y = parseInt(leftEyeResized[1].y); y < parseInt(leftEyeResized[5].y); y ++){
-                    let src = cv.imread("canvasOutput");
-                    let pixel = src.ucharPtr(x, y);
-                    let R = pixel[0];
-                    let G = pixel[1];
-                    let B = pixel[2];
-                    let A = pixel[3];
-                    console.log(R,G,B,A,x,y)
-                }
-            }
+            // for (let x = parseInt(leftEyeResized[0].x); x < parseInt(leftEyeResized[3].x); x ++){
+            //     for (let y = parseInt(leftEyeResized[1].y); y < parseInt(leftEyeResized[5].y); y ++){
+            //         let src = cv.imread("canvasOutput");
+            //         let pixel = src.ucharPtr(x, y);
+            //         let R = pixel[0];
+            //         let G = pixel[1];
+            //         let B = pixel[2];
+            //         let A = pixel[3];
+            //         console.log(R,G,B,A,x,y)
+            //     }
+            // }
 
         }
 
-
     }, 30)
 })
+
+/**
+ * Calculates the distance between 2 points on the cartesian plane
+ * 
+ * @param {object}  p1 First point
+ * @param {object}  p2 Second point
+ *
+ * @return {number} Returns distance in pixels
+ */
+function distance(p1, p2) {
+    return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
+}
