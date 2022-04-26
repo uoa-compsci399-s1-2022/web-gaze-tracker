@@ -90,19 +90,23 @@ video.addEventListener('play', () => {
         if (detections.length === 1) {
             // only need right eye as camera is flipped
             const rightEye = detections[0].landmarks.getRightEye()
+            const leftEye = detections[0].landmarks.getLeftEye()
+
             // get resized points
             const leftEyeResized = resizedDetections[0].landmarks.getLeftEye()
             const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
 
+
             // starting position 
             // TODO: adjust starting postion and distance to fit both eyes properly in canvas
-            const startX = rightEye[0].x - 50
-            const startY = rightEye[0].y - 15
 
+            const [startX, startY, disX, disY] = caluclateStartAndDistance(leftEye, rightEye)
+            
             // get distance between both eyes
             // multiply to get area around eyes as buffer
-            const disX = distance(rightEyeResized[0], leftEyeResized[3]) * 2.5
-            const disY = distance(rightEyeResized[1], leftEyeResized[4])
+
+            // const disX = distance(rightEyeResized[0], leftEyeResized[3]) * 2.5
+            // const disY = distance(rightEyeResized[1], leftEyeResized[4])
 
             // draw cropped video onto canvas
             croppedCanvas.getContext('2d').drawImage(
@@ -142,4 +146,46 @@ video.addEventListener('play', () => {
  */
 const distance = (p1, p2) => {
     return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
+}
+
+
+/**
+ * Taking the leftEye and rightEye coordinates from the faceAPI detection and finds min and max X and Y coordinates and distance between them. 
+ * 
+ * @param {Object}  leftEye leftEye variable is a dictionary of x and y coordinates
+ * @param {Object}  rightEye rightEye variable is a dictionary of x and y coordinates
+ *
+ * @return {number} Returns an array of [startX, startY, disX, disY]
+ */
+const caluclateStartAndDistance = (leftEye, rightEye) => {
+
+    // Calculations for leftEye
+    // Since leftEye is a dictionary, so first convert it to the array 
+    let leftEyeXcoord = []
+    let leftEyeYcoord = []
+    for(let key in leftEye) {
+        leftEyeXcoord.push(leftEye[key].x);
+        leftEyeYcoord.push(leftEye[key].y);
+    }
+    let minX = Math.min(...leftEyeXcoord) - 5
+    let minY1 = Math.min(...leftEyeYcoord)
+    let maxY1 = Math.max(...leftEyeYcoord)
+
+    // Calculations for rightEye
+    let rightEyeXcoord = []
+    let rightEyeYcoord = []
+    for(let key in rightEye) {
+        rightEyeXcoord.push(rightEye[key].x);
+        rightEyeYcoord.push(rightEye[key].y);
+    }
+    let maxX = Math.max(...rightEyeXcoord) + 5
+    let minY2 = Math.min(...rightEyeYcoord)
+    let maxY2 = Math.max(...rightEyeYcoord)
+
+    // If you rotate your head, Y position of the left and the right eye will change, sometimes left eye will have min coordinate and sometimes right eye will have min, same for max coordiante
+    // Determine whether minY, maxY is on the right eye or on the left eye 
+    let minY = Math.min(minY1, minY2) - 5
+    let maxY = Math.max(maxY1, maxY2) + 5
+
+    return [minX, minY, maxX - minX, maxY - minY]
 }
