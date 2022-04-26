@@ -74,18 +74,6 @@ video.addEventListener('play', () => {
         // faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
 
-        // OpenCV adaptive threshold filter applied to the video 
-        // const imgSrc = cv.imread('videoCanvas');
-        // let dst = new cv.Mat();
-        // cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0);
-
-        // cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2);
-        // cv.imshow('canvasOutput', dst);
-
-        // // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
-        // imgSrc.delete();
-        // dst.delete();
-
         // extracting eye data
         if (detections.length === 1) {
             // only need right eye as camera is flipped
@@ -97,16 +85,7 @@ video.addEventListener('play', () => {
             const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
 
 
-            // starting position 
-            // TODO: adjust starting postion and distance to fit both eyes properly in canvas
-
             const [startX, startY, disX, disY] = caluclateStartAndDistance(leftEye, rightEye)
-            
-            // get distance between both eyes
-            // multiply to get area around eyes as buffer
-
-            // const disX = distance(rightEyeResized[0], leftEyeResized[3]) * 2.5
-            // const disY = distance(rightEyeResized[1], leftEyeResized[4])
 
             // draw cropped video onto canvas
             croppedCanvas.getContext('2d').drawImage(
@@ -117,19 +96,43 @@ video.addEventListener('play', () => {
                 croppedCanvas.width, croppedCanvas.height
             )
 
-            // leftEyeResized[0],change [X] the value later as it is not representetive, use max, min function instead to find the min and max coordinate in the array
-            // also want to try drawing this matrix on canvas to see what we get
-            // for (let x = parseInt(leftEyeResized[0].x); x < parseInt(leftEyeResized[3].x); x ++){
-            //     for (let y = parseInt(leftEyeResized[1].y); y < parseInt(leftEyeResized[5].y); y ++){
-            //         let src = cv.imread("canvasOutput");
-            //         let pixel = src.ucharPtr(x, y);
-            //         let R = pixel[0];
-            //         let G = pixel[1];
-            //         let B = pixel[2];
-            //         let A = pixel[3];
-            //         console.log(R,G,B,A,x,y)
+
+            // OpenCV adaptive threshold filter applied to the video 
+            const imgSrc = cv.imread('canvasOutput')
+            let dst = new cv.Mat()
+            cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0)
+            cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2)
+            cv.imshow('canvasOutput', dst)
+            imgSrc.delete()
+            dst.delete()
+
+            
+            let canvas = document.getElementById("canvasOutput")
+            let ctx = canvas.getContext('2d')
+            let imgData = ctx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height)
+            
+            // array [R,G,B,A,R,G,B,A,...]
+            let matrix = cv.matFromImageData(imgData).data
+            
+            //WARNING: tried to make it in a more readable format, however going through the matrix just one time 
+            // takes so much time(making it laggy) since the resolution is high, therefore the array consists of 80000 pixels making it total of 80000*4=320000 elements in the array.
+            // so if we want to work futher with the matrix we need to 1. reduce resolution, 2. reduce canvas width and height, 3. Consider cropping eyes separately (reducing canvas size)
+
+            // counter = 0
+            // rgba_array = []
+            // // array [[R,G,B,A], [R,G,B,A]]
+            // readable_matrix = []
+            // for (component_key in matrix){
+            //     if (counter == 4){
+            //         readable_matrix.push(rgba_array)
+            //         rgba_array = []
+            //         counter = 0
             //     }
+            //     rgba_array.push(matrix[component_key])
+            //     counter++
             // }
+                
+            // console.log(readable_matrix)
 
         }
 
