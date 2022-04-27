@@ -51,14 +51,6 @@ video.addEventListener('play', () => {
     croppedCanvas.style.left = 750 + "px"
     document.body.append(croppedCanvas)
 
-    // create third canvas for adding filters
-    // const faceApiCanvas = faceapi.createCanvasFromMedia(video)
-    // faceApiCanvas.id = "faceApiCanvas"
-    // faceApiCanvas.style.position = "absolute"
-    // faceApiCanvas.style.top = 560 + "px"
-    // faceApiCanvas.style.left = 0 + "px"
-    // document.body.append(faceApiCanvas)
-
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
     faceapi.matchDimensions(canvas, displaySize);
@@ -76,16 +68,11 @@ video.addEventListener('play', () => {
 
         // extracting eye data
         if (detections.length === 1) {
-            // only need right eye as camera is flipped
-            const rightEye = detections[0].landmarks.getRightEye()
+            // get left and right eye
             const leftEye = detections[0].landmarks.getLeftEye()
+            const rightEye = detections[0].landmarks.getRightEye()
 
-            // get resized points
-            const leftEyeResized = resizedDetections[0].landmarks.getLeftEye()
-            const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
-
-
-            const [startX, startY, disX, disY] = caluclateStartAndDistance(leftEye, rightEye)
+            const [startX, startY, disX, disY] = calculateStartAndDistance(leftEye, rightEye, 5)
 
             // draw cropped video onto canvas
             croppedCanvas.getContext('2d').drawImage(
@@ -106,14 +93,14 @@ video.addEventListener('play', () => {
             imgSrc.delete()
             dst.delete()
 
-            
+
             let canvas = document.getElementById("canvasOutput")
             let ctx = canvas.getContext('2d')
             let imgData = ctx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height)
-            
+
             // array [R,G,B,A,R,G,B,A,...]
             let matrix = cv.matFromImageData(imgData).data
-            
+
             //WARNING: tried to make it in a more readable format, however going through the matrix just one time 
             // takes so much time(making it laggy) since the resolution is high, therefore the array consists of 80000 pixels making it total of 80000*4=320000 elements in the array.
             // so if we want to work futher with the matrix we need to 1. reduce resolution, 2. reduce canvas width and height, 3. Consider cropping eyes separately (reducing canvas size)
@@ -131,7 +118,7 @@ video.addEventListener('play', () => {
             //     rgba_array.push(matrix[component_key])
             //     counter++
             // }
-                
+
             // console.log(readable_matrix)
 
         }
@@ -140,55 +127,39 @@ video.addEventListener('play', () => {
 })
 
 /**
- * Calculates the distance between 2 points on the cartesian plane
- * 
- * @param {object}  p1 First point
- * @param {object}  p2 Second point
- *
- * @return {number} Returns distance in pixels
- */
-const distance = (p1, p2) => {
-    return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
-}
-
-
-/**
- * Taking the leftEye and rightEye coordinates from the faceAPI detection and finds min and max X and Y coordinates and distance between them. 
+ * Finds the starting and ending x,y coordinates from the left eye to the right eye.
  * 
  * @param {Object}  leftEye leftEye variable is a dictionary of x and y coordinates
  * @param {Object}  rightEye rightEye variable is a dictionary of x and y coordinates
- *
+ * @param {number}  padding padding added to the left and right
+ * 
  * @return {number} Returns an array of [startX, startY, disX, disY]
  */
-const caluclateStartAndDistance = (leftEye, rightEye) => {
+const calculateStartAndDistance = (leftEye, rightEye, padding) => {
 
     // Calculations for leftEye
-    // Since leftEye is a dictionary, so first convert it to the array 
-    let leftEyeXcoord = []
-    let leftEyeYcoord = []
-    for(let key in leftEye) {
-        leftEyeXcoord.push(leftEye[key].x);
-        leftEyeYcoord.push(leftEye[key].y);
-    }
-    let minX = Math.min(...leftEyeXcoord) - 5
+    // Place x and y coords into seperate arrays
+    const leftEyeXcoord = leftEye.map(i => i.x);
+    const leftEyeYcoord = leftEye.map(i => i.y);
+
+    let minX = Math.min(...leftEyeXcoord) - padding
     let minY1 = Math.min(...leftEyeYcoord)
     let maxY1 = Math.max(...leftEyeYcoord)
 
     // Calculations for rightEye
-    let rightEyeXcoord = []
-    let rightEyeYcoord = []
-    for(let key in rightEye) {
-        rightEyeXcoord.push(rightEye[key].x);
-        rightEyeYcoord.push(rightEye[key].y);
-    }
-    let maxX = Math.max(...rightEyeXcoord) + 5
+    const rightEyeXcoord = rightEye.map(i => i.x);
+    const rightEyeYcoord = rightEye.map(i => i.y);
+
+    let maxX = Math.max(...rightEyeXcoord) + padding
     let minY2 = Math.min(...rightEyeYcoord)
     let maxY2 = Math.max(...rightEyeYcoord)
 
-    // If you rotate your head, Y position of the left and the right eye will change, sometimes left eye will have min coordinate and sometimes right eye will have min, same for max coordiante
+    // If you rotate your head, Y position of the left and the right eye will change, 
+    // sometimes left eye will have min coordinate and sometimes right eye will have min,
+    // same for max coordinate
     // Determine whether minY, maxY is on the right eye or on the left eye 
-    let minY = Math.min(minY1, minY2) - 5
-    let maxY = Math.max(maxY1, maxY2) + 5
+    let minY = Math.min(minY1, minY2) - padding
+    let maxY = Math.max(maxY1, maxY2) + padding
 
     return [minX, minY, maxX - minX, maxY - minY]
 }
