@@ -141,7 +141,7 @@ video.addEventListener('play', () => {
             let sliderInputValue = document.getElementById("myRange");
 
             // Grabs value from value from sliderInputValue and approximates conversion            
-            let greyscaleSliderValue = sliderInputValue.value / 1000;
+            let greyscaleSliderValue = sliderInputValue.value / 100;
             console.log(greyscaleSliderValue)
 
             for (let i = 3; i<imgData.data.length; i+=4) {
