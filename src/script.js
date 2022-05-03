@@ -136,17 +136,9 @@ video.addEventListener('play', () => {
             let originalGrayScaleData = Object.assign([], imgData.data)
 
             // Applying CDF filter 
-
-            // Getting the input value from the slider
-            let sliderInputValue = document.getElementById("myRange");
-
-            // Grabs value from value from sliderInputValue and approximates conversion            
-            let greyscaleSliderValue = sliderInputValue.value / 100;
-            console.log(greyscaleSliderValue)
-
             for (let i = 3; i<imgData.data.length; i+=4) {
                 // Parameter we can change 0.03
-                if ((1.0 / parseFloat(imgData.data[i-1])) < greyscaleSliderValue){
+                if ((1.0 / parseFloat(imgData.data[i-1])) < 0.02){
                     imgData.data[i-3] = 0
                     imgData.data[i-2] = 0
                     imgData.data[i-1] = 0
@@ -195,12 +187,12 @@ video.addEventListener('play', () => {
                 }
                 pixelNum++
             }
-            // console.log(pmi, pmiIndex)
+            console.log(pmi, pmiIndex)
 
             rowY = Math.floor(pmiIndex/(croppedCanvasLeft.width))
             columnX = pmiIndex % (croppedCanvasLeft.width)
 
-            // console.log(rowY, columnX)
+            console.log(rowY, columnX)
 
             // mainImageColumn = leftStartX + padding + column/leftDisX
             // mainImageRow = leftStartY - padding + row/leftDisY
