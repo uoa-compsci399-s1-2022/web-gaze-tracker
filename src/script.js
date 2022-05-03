@@ -124,6 +124,7 @@ video.addEventListener('play', () => {
             // !remove later!
             cv.imshow('canvasOutput2Left', dst)
             // ---------------
+
             imgSrc.delete()
             dst.delete()
 
@@ -131,59 +132,56 @@ video.addEventListener('play', () => {
             let canvas = document.getElementById("canvasOutputLeft")
             let ctx = canvas.getContext('2d')
             let imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
+            // Make a copy of original grayscale data
+            let originalGrayScaleData = Object.assign([], imgData.data)
 
-            // // brightest possible value Pixel with Minimum Intensity
-            // let pmi = 255
-            // // if nothing detected
-            // let pmiIndex = -1
-            // pixelNum = 0
+            // Applying CDF filter 
             for (let i = 3; i<imgData.data.length; i+=4) {
-
                 // Parameter we can change 0.03
-                if ((1.0 / parseFloat(imgData.data[i-1])) < 0.04){
+                if ((1.0 / parseFloat(imgData.data[i-1])) < 0.02){
                     imgData.data[i-3] = 0
                     imgData.data[i-2] = 0
                     imgData.data[i-1] = 0
                 }else{
-                    // if (imgData.data[i-1] < pmi){
-                    //     pmi = imgData.data[i-1]
-                    //     pmiIndex = pixelNum
-                    // }
                     imgData.data[i-3] = 255
                     imgData.data[i-2] = 255
                     imgData.data[i-1] = 255
                 }
-                // pixelNum ++
             }
             
-
+            // draw CDF filtered image
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             canvas.width = imgData.width;
             canvas.height = imgData.height;
             ctx.putImageData(imgData, 0, 0);
 
-            // minimim filter (SEARCH FOR MORE FILTERS TO APPLY)
+
+            // minimim filter applied (SEARCH FOR MORE FILTERS TO APPLY)
             src = cv.imread('canvasOutputLeft');
             dst = new cv.Mat();
             let M = cv.Mat.ones(5, 5, cv.CV_8U);
             let anchor = new cv.Point(-1, -1);
-
             // You can try more different parameters
             cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue());
             cv.imshow('canvasOutputLeft', dst);
             src.delete(); dst.delete(); M.delete();
 
-
-            // brightest possible value Pixel with Minimum Intensity
+            
+            // Getting image data after application of minimum filter
+            canvas = document.getElementById("canvasOutputLeft")
+            ctx = canvas.getContext('2d')
+            imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
+            
+            // Search for brightest possible value Pixel with Minimum Intensity
             let pmi = 255
             // if nothing detected
             let pmiIndex = -1
-            let pixelNum = 0
-
+            let pixelNum = 1
+            
             for (let i = 3; i<imgData.data.length; i+=4) {
                 if (imgData.data[i-1] == 255){
-                    if (imgData.data[i-1] < pmi){
-                        pmi = imgData.data[i-1]
+                    if (originalGrayScaleData[i-1] < pmi){
+                        pmi = originalGrayScaleData[i-1]
                         pmiIndex = pixelNum
                     }
                 }
@@ -191,20 +189,23 @@ video.addEventListener('play', () => {
             }
             console.log(pmi, pmiIndex)
 
-            row = Math.floor(pmiIndex/(croppedCanvasLeft.width))
-            column = pmiIndex % (croppedCanvasLeft.width)
+            rowY = Math.floor(pmiIndex/(croppedCanvasLeft.width))
+            columnX = pmiIndex % (croppedCanvasLeft.width)
 
+            console.log(rowY, columnX)
 
             // mainImageColumn = leftStartX + padding + column/leftDisX
             // mainImageRow = leftStartY - padding + row/leftDisY
             // console.log(row, column, mainImageRow, mainImageColumn)
 
-
-            // let c = document.getElementById("canvasOutputLeft")
-            // let ctxx = c.getContext("2d")
-            // ctxx.beginPath()
-            // ctxx.arc(row, column, 5, 0, 2 * Math.PI)
-            // ctxx.stroke()
+            // drawing circle at location of pmi
+            let c = document.getElementById("canvasOutputLeft")
+            let ctxx = c.getContext("2d")
+            ctxx.beginPath()
+            ctx.lineWidth = 6
+            ctx.strokeStyle = 'green'
+            ctxx.arc(columnX, rowY, 5, 0, 2 * Math.PI)
+            ctxx.stroke()
 
             // array [R,G,B,A,R,G,B,A,...]
             // let matrix = cv.matFromImageData(imgData).data
