@@ -207,15 +207,15 @@ video.addEventListener('play', () => {
                     }
                 }
 
-                // look for 10x10 area around pmi 
-                let averageIntensity10x10 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 5)
+                // look for 25x25 area around pmi 
+                let averageIntensity25x25 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 13)
 
-                // look into 15x15 area around pmi and check against AI in 10x10
+                // look into 35x35 area around pmi and check against AI in 25x25
                 arrayOfPoints = []
-                for (let row = pmiY - 8; row < pmiY + 8; row++) {
-                    for (let pixel = pmiX - 8; pixel < pmiX + 8; pixel++) {
+                for (let row = pmiY - 18; row < pmiY + 18; row++) {
+                    for (let pixel = pmiX - 18; pixel < pmiX + 18; pixel++) {
                         try {
-                            if (grayScaleMatrix[row][pixel] < averageIntensity10x10) {
+                            if (grayScaleMatrix[row][pixel] < averageIntensity25x25) {
                                 arrayOfPoints.push([parseInt(pixel), parseInt(row)])
                             }
                         } catch (error) {
