@@ -138,15 +138,19 @@ video.addEventListener('play', () => {
             // Applying CDF filter 
 
             // Getting the input value from the slider
-            let sliderInputValue = document.getElementById("myRange");
+            const sliderInputValue = document.getElementById("myRange");
+            
 
             // Grabs value from value from sliderInputValue and approximates conversion            
-            let greyscaleSliderValue = sliderInputValue.value / 1000;
-            console.log(greyscaleSliderValue)
+            const intensityThreshold = sliderInputValue.value / 1000;
+            // console.log(intensityThreshold)
+
+            const output = document.getElementById("intensityThreshold")
+            output.innerHTML = intensityThreshold;
 
             for (let i = 3; i<imgData.data.length; i+=4) {
                 // Parameter we can change 0.03
-                if ((1.0 / parseFloat(imgData.data[i-1])) < greyscaleSliderValue){
+                if ((1.0 / parseFloat(imgData.data[i-1])) < intensityThreshold){
                     imgData.data[i-3] = 0
                     imgData.data[i-2] = 0
                     imgData.data[i-1] = 0
