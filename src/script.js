@@ -138,7 +138,7 @@ video.addEventListener('play', () => {
             // Applying CDF filter 
             for (let i = 3; i < imgData.data.length; i += 4) {
                 // Parameter we can change 0.03             (0 - 1) increments of 0.01 or 0.05
-                if ((1.0 / parseFloat(imgData.data[i - 1])) < 0.025) {
+                if ((1.0 / parseFloat(imgData.data[i - 1])) < 0.1) {
                     imgData.data[i - 3] = 0
                     imgData.data[i - 2] = 0
                     imgData.data[i - 1] = 0
@@ -206,20 +206,16 @@ video.addEventListener('play', () => {
                         counter = 0
                     }
                 }
+                
+                // look for 70x70 area around pmi 
+                let averageIntensity70x70 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 35, croppedCanvasLeft)
 
-                // look for 25x25 area around pmi 
-                let averageIntensity25x25 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 13)
-
-                // look into 35x35 area around pmi and check against AI in 25x25
+                // look into grayScale 100x100 area around pmi and check against AI in 70x70
                 arrayOfPoints = []
-                for (let row = pmiY - 18; row < pmiY + 18; row++) {
-                    for (let pixel = pmiX - 18; pixel < pmiX + 18; pixel++) {
-                        try {
-                            if (grayScaleMatrix[row][pixel] < averageIntensity25x25) {
-                                arrayOfPoints.push([parseInt(pixel), parseInt(row)])
-                            }
-                        } catch (error) {
-                            console.error("index out of range");
+                for (let row =  Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
+                    for (let pixel = Math.max(pmiX - 50, 0); pixel < Math.min(pmiX + 50, croppedCanvasLeft.width); pixel++) {
+                        if (grayScaleMatrix[row][pixel] < averageIntensity70x70) {
+                            arrayOfPoints.push([parseInt(pixel), parseInt(row)])
                         }
                     }
                 }
@@ -233,7 +229,6 @@ video.addEventListener('play', () => {
                     totalY += element[1]
                     counter++
                 })
-
                 const newPmiX = totalX / counter
                 const newPmiY = totalY / counter
 
@@ -247,6 +242,16 @@ video.addEventListener('play', () => {
                 let c = document.getElementById("canvasOutput2Left")
                 let ctxx = c.getContext("2d")
                 ctxx.lineWidth = 2
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'blue'
+                ctxx.rect(pmiX-50, pmiY-50, 100, 100);
+                ctxx.stroke();
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'purple'
+                ctxx.rect(pmiX-35, pmiY-35, 70, 70);
+                ctxx.stroke();
 
                 // pmi before
                 ctxx.beginPath()
@@ -311,22 +316,18 @@ video.addEventListener('play', () => {
 * @param {number}  x x position of PMI
 * @param {number}  y y position of PMI
 * @param {number}  size pixel size of square around PMI
+* @param {canvas}  canvas canvas on which the calculation is applied
 * 
 * @return {number} Returns the average intensity around the PMI
 */
-const getAverageIntensity = (grayScaleMatrix, x, y, size) => {
+const getAverageIntensity = (grayScaleMatrix, x, y, size, canvas) => {
     let totalIntensity = 0
     let counter = 0
-    if (y - size > 0 && x - size > 0) {
-        for (let row = y - size; row < y + size; row++) {
-            for (let pixel = x - size; pixel < x + size; pixel++) {
-                try {
-                    totalIntensity += parseInt(grayScaleMatrix[row][pixel])
-                } catch (error) {
-                    console.error("index out of range");
-                }
-                counter++
-            }
+
+    for (let row = Math.max(y - size, 0); row <  Math.min(y + size, canvas.height); row++) {
+        for (let pixel = Math.max(x - size, 0); pixel < Math.min(x + size, canvas.width); pixel++) {
+            totalIntensity += parseInt(grayScaleMatrix[row][pixel])
+            counter++
         }
     }
     return totalIntensity / counter
