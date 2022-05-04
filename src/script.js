@@ -139,23 +139,23 @@ video.addEventListener('play', () => {
 
             // Getting the input value from the slider
             const sliderInputValue = document.getElementById("myRange");
-            
+
             // Grabs value from value from sliderInputValue and approximates conversion            
             const intensityThreshold = sliderInputValue.value / 1000;
 
             const output = document.getElementById("intensityThreshold")
             output.innerHTML = intensityThreshold;
 
-            for (let i = 3; i<imgData.data.length; i+=4) {
+            for (let i = 3; i < imgData.data.length; i += 4) {
                 // Parameter we can change 0.03
-                if ((1.0 / parseFloat(imgData.data[i-1])) < intensityThreshold){
-                    imgData.data[i-3] = 0
-                    imgData.data[i-2] = 0
-                    imgData.data[i-1] = 0
-                }else{
-                    imgData.data[i-3] = 255
-                    imgData.data[i-2] = 255
-                    imgData.data[i-1] = 255
+                if ((1.0 / parseFloat(imgData.data[i - 1])) < intensityThreshold) {
+                    imgData.data[i - 3] = 0
+                    imgData.data[i - 2] = 0
+                    imgData.data[i - 1] = 0
+                } else {
+                    imgData.data[i - 3] = 255
+                    imgData.data[i - 2] = 255
+                    imgData.data[i - 1] = 255
                 }
             }
 
@@ -216,13 +216,13 @@ video.addEventListener('play', () => {
                         counter = 0
                     }
                 }
-                
+
                 // look for 70x70 area around pmi 
                 let averageIntensity70x70 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 35, croppedCanvasLeft)
 
                 // look into grayScale 100x100 area around pmi and check against AI in 70x70
                 arrayOfPoints = []
-                for (let row =  Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
+                for (let row = Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
                     for (let pixel = Math.max(pmiX - 50, 0); pixel < Math.min(pmiX + 50, croppedCanvasLeft.width); pixel++) {
                         if (grayScaleMatrix[row][pixel] < averageIntensity70x70) {
                             arrayOfPoints.push([parseInt(pixel), parseInt(row)])
@@ -255,12 +255,12 @@ video.addEventListener('play', () => {
 
                 ctxx.beginPath();
                 ctxx.strokeStyle = 'blue'
-                ctxx.rect(pmiX-50, pmiY-50, 100, 100);
+                ctxx.rect(pmiX - 50, pmiY - 50, 100, 100);
                 ctxx.stroke();
 
                 ctxx.beginPath();
                 ctxx.strokeStyle = 'purple'
-                ctxx.rect(pmiX-35, pmiY-35, 70, 70);
+                ctxx.rect(pmiX - 35, pmiY - 35, 70, 70);
                 ctxx.stroke();
 
                 // pmi before
@@ -334,7 +334,7 @@ const getAverageIntensity = (grayScaleMatrix, x, y, size, canvas) => {
     let totalIntensity = 0
     let counter = 0
 
-    for (let row = Math.max(y - size, 0); row <  Math.min(y + size, canvas.height); row++) {
+    for (let row = Math.max(y - size, 0); row < Math.min(y + size, canvas.height); row++) {
         for (let pixel = Math.max(x - size, 0); pixel < Math.min(x + size, canvas.width); pixel++) {
             totalIntensity += parseInt(grayScaleMatrix[row][pixel])
             counter++
