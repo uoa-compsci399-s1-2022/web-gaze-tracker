@@ -37,3 +37,10 @@
     background: #04AA6D;
     cursor: pointer;
   }
+section {
+    padding: 35px 0;
+}
+
+#team-heading {
+    margin-bottom: 25px;
+}
