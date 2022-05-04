@@ -140,7 +140,6 @@ video.addEventListener('play', () => {
             // Getting the input value from the slider
             const sliderInputValue = document.getElementById("myRange");
             
-
             // Grabs value from value from sliderInputValue and approximates conversion            
             const intensityThreshold = sliderInputValue.value / 1000;
             // console.log(intensityThreshold)
