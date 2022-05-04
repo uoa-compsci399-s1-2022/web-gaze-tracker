@@ -102,7 +102,7 @@ video.addEventListener('play', () => {
                 video,
                 leftStartX, leftStartY,                                 // start position
                 leftDisX, leftDisY,                                     // area to crop
-                0, 0,                                           // draw from point (0, 0) in the canvas,
+                0, 0,                                                   // draw from point (0, 0) in the canvas,
                 croppedCanvasLeft.width, croppedCanvasLeft.height
             )
 
@@ -110,7 +110,7 @@ video.addEventListener('play', () => {
                 video,
                 rightStartX, rightStartY,                                 // start position
                 rightDisX, rightDisY,                                     // area to crop
-                0, 0,                                           // draw from point (0, 0) in the canvas,
+                0, 0,                                                     // draw from point (0, 0) in the canvas,
                 croppedCanvasRight.width, croppedCanvasRight.height
             )
 
@@ -121,7 +121,7 @@ video.addEventListener('play', () => {
             cv.cvtColor(imgSrc, dst, cv.COLOR_RGBA2GRAY, 0)
             cv.imshow('canvasOutputLeft', dst)
 
-            // !remove later!
+            // debugging canvas
             cv.imshow('canvasOutput2Left', dst)
             // ---------------
 
@@ -142,7 +142,6 @@ video.addEventListener('play', () => {
             
             // Grabs value from value from sliderInputValue and approximates conversion            
             const intensityThreshold = sliderInputValue.value / 1000;
-            // console.log(intensityThreshold)
 
             const output = document.getElementById("intensityThreshold")
             output.innerHTML = intensityThreshold;
@@ -159,70 +158,124 @@ video.addEventListener('play', () => {
                     imgData.data[i-1] = 255
                 }
             }
-            
+
             // draw CDF filtered image
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            canvas.width = imgData.width;
-            canvas.height = imgData.height;
-            ctx.putImageData(imgData, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            canvas.width = imgData.width
+            canvas.height = imgData.height
+            ctx.putImageData(imgData, 0, 0)
 
 
             // minimim filter applied (SEARCH FOR MORE FILTERS TO APPLY)
-            src = cv.imread('canvasOutputLeft');
-            dst = new cv.Mat();
-            let M = cv.Mat.ones(5, 5, cv.CV_8U);
-            let anchor = new cv.Point(-1, -1);
+            src = cv.imread('canvasOutputLeft')
+            dst = new cv.Mat()
+            let M = cv.Mat.ones(5, 5, cv.CV_8U)
+            let anchor = new cv.Point(-1, -1)
             // You can try more different parameters
-            cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue());
-            cv.imshow('canvasOutputLeft', dst);
-            src.delete(); dst.delete(); M.delete();
+            cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue())
+            cv.imshow('canvasOutputLeft', dst)
+            src.delete(); dst.delete(); M.delete()
 
-            
+
             // Getting image data after application of minimum filter
             canvas = document.getElementById("canvasOutputLeft")
             ctx = canvas.getContext('2d')
             imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
-            
-            // Search for brightest possible value Pixel with Minimum Intensity
+
+            // Search for brightest possible value Pixel with Minimum Intensity (PMI)
             let pmi = 255
             // if nothing detected
             let pmiIndex = -1
             let pixelNum = 1
-            
-            for (let i = 3; i<imgData.data.length; i+=4) {
-                if (imgData.data[i-1] == 255){
-                    if (originalGrayScaleData[i-1] < pmi){
-                        pmi = originalGrayScaleData[i-1]
+
+            for (let i = 3; i < imgData.data.length; i += 4) {
+                if (imgData.data[i - 1] == 255) {
+                    if (originalGrayScaleData[i - 1] < pmi) {
+                        pmi = originalGrayScaleData[i - 1]
                         pmiIndex = pixelNum
                     }
                 }
                 pixelNum++
             }
-            // console.log(pmi, pmiIndex)
 
-            rowY = Math.floor(pmiIndex/(croppedCanvasLeft.width))
-            columnX = pmiIndex % (croppedCanvasLeft.width)
+            if (pmiIndex !== -1) {
+                // calculate position of PMI
+                const pmiX = pmiIndex % (croppedCanvasLeft.width)  //column
+                const pmiY = Math.floor(pmiIndex / (croppedCanvasLeft.width)) //row
 
-            // console.log(rowY, columnX)
+                // convert grayscale to 2D array
+                let grayScaleMatrix = []
+                let row = []
+                let counter = 0
+                for (let i = 3; i < originalGrayScaleData.length; i += 4) {
+                    counter++
+                    row.push(originalGrayScaleData[i - 1])
+                    if (counter == croppedCanvasLeft.width) {
+                        grayScaleMatrix.push(row)
+                        row = []
+                        counter = 0
+                    }
+                }
+                
+                // look for 70x70 area around pmi 
+                let averageIntensity70x70 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 35, croppedCanvasLeft)
 
-            // mainImageColumn = leftStartX + padding + column/leftDisX
-            // mainImageRow = leftStartY - padding + row/leftDisY
-            // console.log(row, column, mainImageRow, mainImageColumn)
+                // look into grayScale 100x100 area around pmi and check against AI in 70x70
+                arrayOfPoints = []
+                for (let row =  Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
+                    for (let pixel = Math.max(pmiX - 50, 0); pixel < Math.min(pmiX + 50, croppedCanvasLeft.width); pixel++) {
+                        if (grayScaleMatrix[row][pixel] < averageIntensity70x70) {
+                            arrayOfPoints.push([parseInt(pixel), parseInt(row)])
+                        }
+                    }
+                }
 
-            // drawing circle at location of pmi
-            let c = document.getElementById("canvasOutputLeft")
-            let ctxx = c.getContext("2d")
-            ctxx.beginPath()
-            ctx.lineWidth = 6
-            ctx.strokeStyle = 'green'
-            ctxx.arc(columnX, rowY, 5, 0, 2 * Math.PI)
-            ctxx.stroke()
+                // calculating average coordinates
+                totalX = 0
+                totalY = 0
+                counter = 0
+                arrayOfPoints.forEach(element => {
+                    totalX += element[0]
+                    totalY += element[1]
+                    counter++
+                })
+                const newPmiX = totalX / counter
+                const newPmiY = totalY / counter
 
-            // array [R,G,B,A,R,G,B,A,...]
-            // let matrix = cv.matFromImageData(imgData).data
 
+                // coordinates for main image
+                // mainImageColumn = leftStartX + padding + column / leftDisX
+                // mainImageRow = leftStartY - padding + row / leftDisY
+                // console.log(row, column, mainImageRow, mainImageColumn)
+
+                // drawing circle at location of pmi
+                let c = document.getElementById("canvasOutput2Left")
+                let ctxx = c.getContext("2d")
+                ctxx.lineWidth = 2
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'blue'
+                ctxx.rect(pmiX-50, pmiY-50, 100, 100);
+                ctxx.stroke();
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'purple'
+                ctxx.rect(pmiX-35, pmiY-35, 70, 70);
+                ctxx.stroke();
+
+                // pmi before
+                ctxx.beginPath()
+                ctxx.strokeStyle = 'green'
+                ctxx.arc(pmiX, pmiY, 2, 0, 2 * Math.PI)
+                ctxx.stroke()
+
+                // pmi after the averageIntesity calculations
+                ctxx.beginPath()
+                ctxx.strokeStyle = 'red'
+                ctxx.arc(newPmiX, newPmiY, 2, 0, 2 * Math.PI)
+                ctxx.stroke()
+            }
         }
-
     }, 30)
 })
 
@@ -265,6 +318,30 @@ video.addEventListener('play', () => {
 
 //     return [minX, minY, maxX - minX, maxY - minY]
 // }
+
+
+/** Calculates the average intensity in a (size x size) pixel square around the PMI
+* 
+* @param {array}  grayScaleMatrix 2D array of pixels
+* @param {number}  x x position of PMI
+* @param {number}  y y position of PMI
+* @param {number}  size pixel size of square around PMI
+* @param {canvas}  canvas canvas on which the calculation is applied
+* 
+* @return {number} Returns the average intensity around the PMI
+*/
+const getAverageIntensity = (grayScaleMatrix, x, y, size, canvas) => {
+    let totalIntensity = 0
+    let counter = 0
+
+    for (let row = Math.max(y - size, 0); row <  Math.min(y + size, canvas.height); row++) {
+        for (let pixel = Math.max(x - size, 0); pixel < Math.min(x + size, canvas.width); pixel++) {
+            totalIntensity += parseInt(grayScaleMatrix[row][pixel])
+            counter++
+        }
+    }
+    return totalIntensity / counter
+}
 
 
 /**
