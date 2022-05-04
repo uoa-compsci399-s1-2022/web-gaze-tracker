@@ -19,7 +19,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         canvas {
             position: absolute;
         }
@@ -27,7 +27,10 @@
 </head>
 
 <body>
-
+    <div class="slidecontainer">
+        <input type="range" min="10" max="50" value="30" class="slider" id="myRange">
+        <p>Intensity Threshold: <span id="intensityThreshold"></span></p>
+    </div>
 </body>
 
 </html>

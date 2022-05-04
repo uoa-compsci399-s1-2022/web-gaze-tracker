@@ -42,22 +42,33 @@ video.addEventListener('play', () => {
     document.body.append(canvas)
 
     // create second canvas for adding filters
-    const croppedCanvas = document.createElement("CANVAS")
-    croppedCanvas.id = "canvasOutput"
-    croppedCanvas.width = 500
-    croppedCanvas.height = 150
-    croppedCanvas.style.position = "absolute"
-    croppedCanvas.style.top = 0 + "px"
-    croppedCanvas.style.left = 750 + "px"
-    document.body.append(croppedCanvas)
+    const croppedCanvasLeft = document.createElement("CANVAS")
+    croppedCanvasLeft.id = "canvasOutputLeft"
+    croppedCanvasLeft.width = 200
+    croppedCanvasLeft.height = 200
+    croppedCanvasLeft.style.position = "absolute"
+    croppedCanvasLeft.style.top = 0 + "px"
+    croppedCanvasLeft.style.left = 750 + "px"
+    document.body.append(croppedCanvasLeft)
 
-    // create third canvas for adding filters
-    // const faceApiCanvas = faceapi.createCanvasFromMedia(video)
-    // faceApiCanvas.id = "faceApiCanvas"
-    // faceApiCanvas.style.position = "absolute"
-    // faceApiCanvas.style.top = 560 + "px"
-    // faceApiCanvas.style.left = 0 + "px"
-    // document.body.append(faceApiCanvas)
+    const croppedCanvasRight = document.createElement("CANVAS")
+    croppedCanvasRight.id = "canvasOutputRight"
+    croppedCanvasRight.width = 200
+    croppedCanvasRight.height = 200
+    croppedCanvasRight.style.position = "absolute"
+    croppedCanvasRight.style.top = 0 + "px"
+    croppedCanvasRight.style.left = 950 + "px"
+    document.body.append(croppedCanvasRight)
+
+    // create second canvas for adding filters
+    const croppedCanvas2 = document.createElement("CANVAS")
+    croppedCanvas2.id = "canvasOutput2Left"
+    croppedCanvas2.width = 200
+    croppedCanvas2.height = 200
+    croppedCanvas2.style.position = "absolute"
+    croppedCanvas2.style.top = 200 + "px"
+    croppedCanvas2.style.left = 750 + "px"
+    document.body.append(croppedCanvas2)
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
@@ -74,72 +85,289 @@ video.addEventListener('play', () => {
         // faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
 
-        // OpenCV adaptive threshold filter applied to the video 
-        // const imgSrc = cv.imread('videoCanvas');
-        // let dst = new cv.Mat();
-        // cv.cvtColor(imgSrc, imgSrc, cv.COLOR_RGBA2GRAY, 0);
-
-        // cv.adaptiveThreshold(imgSrc, dst, 200, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 35, 2);
-        // cv.imshow('canvasOutput', dst);
-
-        // // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
-        // imgSrc.delete();
-        // dst.delete();
-
         // extracting eye data
         if (detections.length === 1) {
-            // only need right eye as camera is flipped
+            // get left and right eye
+            const leftEye = detections[0].landmarks.getLeftEye()
             const rightEye = detections[0].landmarks.getRightEye()
-            // get resized points
-            const leftEyeResized = resizedDetections[0].landmarks.getLeftEye()
-            const rightEyeResized = resizedDetections[0].landmarks.getRightEye()
 
-            // starting position 
-            // TODO: adjust starting postion and distance to fit both eyes properly in canvas
-            const startX = rightEye[0].x - 50
-            const startY = rightEye[0].y - 15
+            const padding = 5
 
-            // get distance between both eyes
-            // multiply to get area around eyes as buffer
-            const disX = distance(rightEyeResized[0], leftEyeResized[3]) * 2.5
-            const disY = distance(rightEyeResized[1], leftEyeResized[4])
+            const [leftStartX, leftStartY, leftDisX, leftDisY] = calculateStartAndDistance(leftEye, padding)
+
+            const [rightStartX, rightStartY, rightDisX, rightDisY] = calculateStartAndDistance(rightEye, padding)
 
             // draw cropped video onto canvas
-            croppedCanvas.getContext('2d').drawImage(
+            croppedCanvasLeft.getContext('2d').drawImage(
                 video,
-                startX, startY,                                 // start position
-                disX, disY,                                     // area to crop
-                0, 0,                                           // draw from point (0, 0) in the canvas,
-                croppedCanvas.width, croppedCanvas.height
+                leftStartX, leftStartY,                                 // start position
+                leftDisX, leftDisY,                                     // area to crop
+                0, 0,                                                   // draw from point (0, 0) in the canvas,
+                croppedCanvasLeft.width, croppedCanvasLeft.height
             )
 
-            // leftEyeResized[0],change [X] the value later as it is not representetive, use max, min function instead to find the min and max coordinate in the array
-            // also want to try drawing this matrix on canvas to see what we get
-            // for (let x = parseInt(leftEyeResized[0].x); x < parseInt(leftEyeResized[3].x); x ++){
-            //     for (let y = parseInt(leftEyeResized[1].y); y < parseInt(leftEyeResized[5].y); y ++){
-            //         let src = cv.imread("canvasOutput");
-            //         let pixel = src.ucharPtr(x, y);
-            //         let R = pixel[0];
-            //         let G = pixel[1];
-            //         let B = pixel[2];
-            //         let A = pixel[3];
-            //         console.log(R,G,B,A,x,y)
-            //     }
-            // }
+            croppedCanvasRight.getContext('2d').drawImage(
+                video,
+                rightStartX, rightStartY,                                 // start position
+                rightDisX, rightDisY,                                     // area to crop
+                0, 0,                                                     // draw from point (0, 0) in the canvas,
+                croppedCanvasRight.width, croppedCanvasRight.height
+            )
 
+
+            // OpenCV adaptive threshold filter applied to the video 
+            const imgSrc = cv.imread('canvasOutputLeft')
+            let dst = new cv.Mat()
+            cv.cvtColor(imgSrc, dst, cv.COLOR_RGBA2GRAY, 0)
+            cv.imshow('canvasOutputLeft', dst)
+
+            // debugging canvas
+            cv.imshow('canvasOutput2Left', dst)
+            // ---------------
+
+            imgSrc.delete()
+            dst.delete()
+
+
+            let canvas = document.getElementById("canvasOutputLeft")
+            let ctx = canvas.getContext('2d')
+            let imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
+            // Make a copy of original grayscale data
+            let originalGrayScaleData = Object.assign([], imgData.data)
+
+            // Applying CDF filter 
+
+            // Getting the input value from the slider
+            const sliderInputValue = document.getElementById("myRange");
+
+            // Grabs value from value from sliderInputValue and approximates conversion            
+            const intensityThreshold = sliderInputValue.value / 1000;
+
+            const output = document.getElementById("intensityThreshold")
+            output.innerHTML = intensityThreshold;
+
+            for (let i = 3; i < imgData.data.length; i += 4) {
+                // Parameter we can change 0.03
+                if ((1.0 / parseFloat(imgData.data[i - 1])) < intensityThreshold) {
+                    imgData.data[i - 3] = 0
+                    imgData.data[i - 2] = 0
+                    imgData.data[i - 1] = 0
+                } else {
+                    imgData.data[i - 3] = 255
+                    imgData.data[i - 2] = 255
+                    imgData.data[i - 1] = 255
+                }
+            }
+
+            // draw CDF filtered image
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            canvas.width = imgData.width
+            canvas.height = imgData.height
+            ctx.putImageData(imgData, 0, 0)
+
+
+            // minimim filter applied (SEARCH FOR MORE FILTERS TO APPLY)
+            src = cv.imread('canvasOutputLeft')
+            dst = new cv.Mat()
+            let M = cv.Mat.ones(5, 5, cv.CV_8U)
+            let anchor = new cv.Point(-1, -1)
+            // You can try more different parameters
+            cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue())
+            cv.imshow('canvasOutputLeft', dst)
+            src.delete(); dst.delete(); M.delete()
+
+
+            // Getting image data after application of minimum filter
+            canvas = document.getElementById("canvasOutputLeft")
+            ctx = canvas.getContext('2d')
+            imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
+
+            // Search for brightest possible value Pixel with Minimum Intensity (PMI)
+            let pmi = 255
+            // if nothing detected
+            let pmiIndex = -1
+            let pixelNum = 1
+
+            for (let i = 3; i < imgData.data.length; i += 4) {
+                if (imgData.data[i - 1] == 255) {
+                    if (originalGrayScaleData[i - 1] < pmi) {
+                        pmi = originalGrayScaleData[i - 1]
+                        pmiIndex = pixelNum
+                    }
+                }
+                pixelNum++
+            }
+
+            if (pmiIndex !== -1) {
+                // calculate position of PMI
+                const pmiX = pmiIndex % (croppedCanvasLeft.width)  //column
+                const pmiY = Math.floor(pmiIndex / (croppedCanvasLeft.width)) //row
+
+                // convert grayscale to 2D array
+                let grayScaleMatrix = []
+                let row = []
+                let counter = 0
+                for (let i = 3; i < originalGrayScaleData.length; i += 4) {
+                    counter++
+                    row.push(originalGrayScaleData[i - 1])
+                    if (counter == croppedCanvasLeft.width) {
+                        grayScaleMatrix.push(row)
+                        row = []
+                        counter = 0
+                    }
+                }
+
+                // look for 70x70 area around pmi 
+                let averageIntensity70x70 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 35, croppedCanvasLeft)
+
+                // look into grayScale 100x100 area around pmi and check against AI in 70x70
+                arrayOfPoints = []
+                for (let row = Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
+                    for (let pixel = Math.max(pmiX - 50, 0); pixel < Math.min(pmiX + 50, croppedCanvasLeft.width); pixel++) {
+                        if (grayScaleMatrix[row][pixel] < averageIntensity70x70) {
+                            arrayOfPoints.push([parseInt(pixel), parseInt(row)])
+                        }
+                    }
+                }
+
+                // calculating average coordinates
+                totalX = 0
+                totalY = 0
+                counter = 0
+                arrayOfPoints.forEach(element => {
+                    totalX += element[0]
+                    totalY += element[1]
+                    counter++
+                })
+                const newPmiX = totalX / counter
+                const newPmiY = totalY / counter
+
+
+                // coordinates for main image
+                // mainImageColumn = leftStartX + padding + column / leftDisX
+                // mainImageRow = leftStartY - padding + row / leftDisY
+                // console.log(row, column, mainImageRow, mainImageColumn)
+
+                // drawing circle at location of pmi
+                let c = document.getElementById("canvasOutput2Left")
+                let ctxx = c.getContext("2d")
+                ctxx.lineWidth = 2
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'blue'
+                ctxx.rect(pmiX - 50, pmiY - 50, 100, 100);
+                ctxx.stroke();
+
+                ctxx.beginPath();
+                ctxx.strokeStyle = 'purple'
+                ctxx.rect(pmiX - 35, pmiY - 35, 70, 70);
+                ctxx.stroke();
+
+                // pmi before
+                ctxx.beginPath()
+                ctxx.strokeStyle = 'green'
+                ctxx.arc(pmiX, pmiY, 2, 0, 2 * Math.PI)
+                ctxx.stroke()
+
+                // pmi after the averageIntesity calculations
+                ctxx.beginPath()
+                ctxx.strokeStyle = 'red'
+                ctxx.arc(newPmiX, newPmiY, 2, 0, 2 * Math.PI)
+                ctxx.stroke()
+            }
         }
-
     }, 30)
 })
 
+
+
+// /**
+//  * Finds the starting and ending x,y coordinates from the left eye to the right eye.
+//  * 
+//  * @param {Object}  leftEye leftEye variable is a dictionary of x and y coordinates
+//  * @param {Object}  rightEye rightEye variable is a dictionary of x and y coordinates
+//  * @param {number}  padding padding added to the left and right
+//  * 
+//  * @return {number} Returns an array of [startX, startY, disX, disY]
+//  */
+// const calculateStartAndDistance = (leftEye, rightEye, padding) => {
+
+//     // Calculations for leftEye
+//     // Place x and y coords into seperate arrays
+//     const leftEyeXcoord = leftEye.map(i => i.x);
+//     const leftEyeYcoord = leftEye.map(i => i.y);
+
+//     let minX = Math.min(...leftEyeXcoord) - padding
+//     let minY1 = Math.min(...leftEyeYcoord)
+//     let maxY1 = Math.max(...leftEyeYcoord)
+
+//     // Calculations for rightEye
+//     const rightEyeXcoord = rightEye.map(i => i.x);
+//     const rightEyeYcoord = rightEye.map(i => i.y);
+
+//     let maxX = Math.max(...rightEyeXcoord) + padding
+//     let minY2 = Math.min(...rightEyeYcoord)
+//     let maxY2 = Math.max(...rightEyeYcoord)
+
+//     // If you rotate your head, Y position of the left and the right eye will change, 
+//     // sometimes left eye will have min coordinate and sometimes right eye will have min,
+//     // same for max coordinate
+//     // Determine whether minY, maxY is on the right eye or on the left eye 
+//     let minY = Math.min(minY1, minY2) - padding
+//     let maxY = Math.max(maxY1, maxY2) + padding
+
+//     return [minX, minY, maxX - minX, maxY - minY]
+// }
+
+
+/** Calculates the average intensity in a (size x size) pixel square around the PMI
+* 
+* @param {array}  grayScaleMatrix 2D array of pixels
+* @param {number}  x x position of PMI
+* @param {number}  y y position of PMI
+* @param {number}  size pixel size of square around PMI
+* @param {canvas}  canvas canvas on which the calculation is applied
+* 
+* @return {number} Returns the average intensity around the PMI
+*/
+const getAverageIntensity = (grayScaleMatrix, x, y, size, canvas) => {
+    let totalIntensity = 0
+    let counter = 0
+
+    for (let row = Math.max(y - size, 0); row < Math.min(y + size, canvas.height); row++) {
+        for (let pixel = Math.max(x - size, 0); pixel < Math.min(x + size, canvas.width); pixel++) {
+            totalIntensity += parseInt(grayScaleMatrix[row][pixel])
+            counter++
+        }
+    }
+    return totalIntensity / counter
+}
+
+
 /**
- * Calculates the distance between 2 points on the cartesian plane
+ * Finds the starting and ending x,y coordinates from the left eye to the right eye.
  * 
- * @param {object}  p1 First point
- * @param {object}  p2 Second point
- *
- * @return {number} Returns distance in pixels
+ * @param {Object}  eye eye variable is a dictionary of x and y coordinates
+ * @param {number}  padding padding added to image
+ * 
+ * @return {number} Returns an array of [startX, startY, disX, disY]
  */
-const distance = (p1, p2) => {
-    return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
+const calculateStartAndDistance = (eye, padding) => {
+
+    // Place x and y coords into seperate arrays
+    const EyeXcoord = eye.map(i => i.x);
+    const EyeYcoord = eye.map(i => i.y);
+
+    let minX = Math.min(...EyeXcoord) - padding
+    let minY1 = Math.min(...EyeYcoord)
+    let maxY1 = Math.max(...EyeYcoord)
+
+    let maxX = Math.max(...EyeXcoord) + padding
+    let minY2 = Math.min(...EyeYcoord)
+    let maxY2 = Math.max(...EyeYcoord)
+
+    let minY = Math.min(minY1, minY2) - padding
+    let maxY = Math.max(maxY1, maxY2) + padding
+
+    return [minX, minY, maxX - minX, maxY - minY]
 }
