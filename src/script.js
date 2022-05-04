@@ -136,16 +136,26 @@ video.addEventListener('play', () => {
             let originalGrayScaleData = Object.assign([], imgData.data)
 
             // Applying CDF filter 
-            for (let i = 3; i < imgData.data.length; i += 4) {
-                // Parameter we can change 0.03             (0 - 1) increments of 0.01 or 0.05
-                if ((1.0 / parseFloat(imgData.data[i - 1])) < 0.1) {
-                    imgData.data[i - 3] = 0
-                    imgData.data[i - 2] = 0
-                    imgData.data[i - 1] = 0
-                } else {
-                    imgData.data[i - 3] = 255
-                    imgData.data[i - 2] = 255
-                    imgData.data[i - 1] = 255
+
+            // Getting the input value from the slider
+            const sliderInputValue = document.getElementById("myRange");
+            
+            // Grabs value from value from sliderInputValue and approximates conversion            
+            const intensityThreshold = sliderInputValue.value / 1000;
+
+            const output = document.getElementById("intensityThreshold")
+            output.innerHTML = intensityThreshold;
+
+            for (let i = 3; i<imgData.data.length; i+=4) {
+                // Parameter we can change 0.03
+                if ((1.0 / parseFloat(imgData.data[i-1])) < intensityThreshold){
+                    imgData.data[i-3] = 0
+                    imgData.data[i-2] = 0
+                    imgData.data[i-1] = 0
+                }else{
+                    imgData.data[i-3] = 255
+                    imgData.data[i-2] = 255
+                    imgData.data[i-1] = 255
                 }
             }
 
