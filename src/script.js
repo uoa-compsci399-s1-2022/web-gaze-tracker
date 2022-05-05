@@ -7,15 +7,15 @@ const video = document.createElement("VIDEO")
 video.id = "video"
 video.width = 750
 video.height = 560
-video.autoplay = true;
+video.autoplay = true
 video.defaultMuted = true
 video.style.position = "absolute"
 video.style.top = 0 + "px"
 video.style.left = 0 + "px"
 
 // Load video element and append to body
-video.load();
-document.body.appendChild(video);
+video.load()
+document.body.appendChild(video)
 
 // Load models and start video
 Promise.all([
@@ -72,7 +72,7 @@ video.addEventListener('play', () => {
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
-    faceapi.matchDimensions(canvas, displaySize);
+    faceapi.matchDimensions(canvas, displaySize)
 
     // Main loop where face detection and eye tracking takes place.
     // Repeats every 30 ms
@@ -138,13 +138,13 @@ video.addEventListener('play', () => {
             // Applying CDF filter 
 
             // Getting the input value from the slider
-            const sliderInputValue = document.getElementById("myRange");
+            const sliderInputValue = document.getElementById("myRange")
 
             // Grabs value from value from sliderInputValue and approximates conversion            
-            const intensityThreshold = sliderInputValue.value / 1000;
+            const intensityThreshold = sliderInputValue.value / 1000
 
             const output = document.getElementById("intensityThreshold")
-            output.innerHTML = intensityThreshold;
+            output.innerHTML = intensityThreshold
 
             for (let i = 3; i < imgData.data.length; i += 4) {
                 // Parameter we can change 0.03
@@ -174,7 +174,9 @@ video.addEventListener('play', () => {
             // You can try more different parameters
             cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue())
             cv.imshow('canvasOutputLeft', dst)
-            src.delete(); dst.delete(); M.delete()
+            src.delete()
+            dst.delete()
+            M.delete()
 
 
             // Getting image data after application of minimum filter
@@ -253,15 +255,15 @@ video.addEventListener('play', () => {
                 let ctxx = c.getContext("2d")
                 ctxx.lineWidth = 2
 
-                ctxx.beginPath();
+                ctxx.beginPath()
                 ctxx.strokeStyle = 'blue'
-                ctxx.rect(pmiX - 50, pmiY - 50, 100, 100);
-                ctxx.stroke();
+                ctxx.rect(pmiX - 50, pmiY - 50, 100, 100)
+                ctxx.stroke()
 
-                ctxx.beginPath();
+                ctxx.beginPath()
                 ctxx.strokeStyle = 'purple'
-                ctxx.rect(pmiX - 35, pmiY - 35, 70, 70);
-                ctxx.stroke();
+                ctxx.rect(pmiX - 35, pmiY - 35, 70, 70)
+                ctxx.stroke()
 
                 // pmi before
                 ctxx.beginPath()
@@ -294,16 +296,16 @@ video.addEventListener('play', () => {
 
 //     // Calculations for leftEye
 //     // Place x and y coords into seperate arrays
-//     const leftEyeXcoord = leftEye.map(i => i.x);
-//     const leftEyeYcoord = leftEye.map(i => i.y);
+//     const leftEyeXcoord = leftEye.map(i => i.x)
+//     const leftEyeYcoord = leftEye.map(i => i.y)
 
 //     let minX = Math.min(...leftEyeXcoord) - padding
 //     let minY1 = Math.min(...leftEyeYcoord)
 //     let maxY1 = Math.max(...leftEyeYcoord)
 
 //     // Calculations for rightEye
-//     const rightEyeXcoord = rightEye.map(i => i.x);
-//     const rightEyeYcoord = rightEye.map(i => i.y);
+//     const rightEyeXcoord = rightEye.map(i => i.x)
+//     const rightEyeYcoord = rightEye.map(i => i.y)
 
 //     let maxX = Math.max(...rightEyeXcoord) + padding
 //     let minY2 = Math.min(...rightEyeYcoord)
@@ -355,8 +357,8 @@ const getAverageIntensity = (grayScaleMatrix, x, y, size, canvas) => {
 const calculateStartAndDistance = (eye, padding) => {
 
     // Place x and y coords into seperate arrays
-    const EyeXcoord = eye.map(i => i.x);
-    const EyeYcoord = eye.map(i => i.y);
+    const EyeXcoord = eye.map(i => i.x)
+    const EyeYcoord = eye.map(i => i.y)
 
     let minX = Math.min(...EyeXcoord) - padding
     let minY1 = Math.min(...EyeYcoord)
