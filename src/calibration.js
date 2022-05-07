@@ -61,10 +61,10 @@ function calibrateAllPoints() {
     // Total number of points calibrated should equal to 9
     if ( totalPointsCalibrated == 9) {
         console.log("All points have been clicked.");
-        // NEXT STEP TO COMPLETE
+        // NEXT STEP TO COMPLETE BY MONDAY
     }
     
 }
 
-// call the drawCalibrationPoints function when window loads
+// call the drawCalibrationPoints function when window loads.
 window.onload =  drawCalibrationPoints;
