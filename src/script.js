@@ -371,5 +371,7 @@ const calculateStartAndDistance = (eye, padding) => {
     let minY = Math.min(minY1, minY2) - padding
     let maxY = Math.max(maxY1, maxY2) + padding
 
+    //---- Store all the points in this function to be used in our calibration parts
+
     return [minX, minY, maxX - minX, maxY - minY]
 }

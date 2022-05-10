@@ -9,14 +9,14 @@ function drawCalibrationPoints () {
         const point = document.createElement("input");
         point.type = "button";
         point.className = "Calibration";
-        point.id = `Pt${i}`;
-        calibrationDiv.appendChild(point);~~~
+        point.id = `Pt${i}`
+        calibrationDiv.appendChild(point);
         point.addEventListener("click", calibrateAllPoints);
   }
 
   document.body.appendChild(calibrationDiv);
 
-} // -- drawCalibrationPoints()
+} // ---- drawCalibrationPoints()
 
 //  The object that stores click counts with point id as the key.
 let calibrationPoints = {};
@@ -39,7 +39,7 @@ function calibrateAllPoints() {
         calibrationPoints[getPointID]++;
     }
 
-    // ----------------------------------------------------------------
+    // -----------------------------------------------------------------
     // - Checks if each point is clicked
     // - for each point, we check if user has clicked it 5 times
     // - if so, then disable point and display yellow point to complete
@@ -51,6 +51,11 @@ function calibrateAllPoints() {
 
     } else if (calibrationPoints[getPointID] < 5) {
         document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2;
+
+        // RICKY ----- PREREQ CRUCIAL STEP: -----
+        // store (--> newPmiX, --> newPmiY) in a global variable
+        // call the helper calculation function
+        // Return or save this in a global [array] - For Amri to use
     };
 
     // This logs out the specific point id and the number of clicks per point
@@ -61,7 +66,11 @@ function calibrateAllPoints() {
     // Total number of points calibrated should equal to 9
     if ( totalPointsCalibrated == 9) {
         console.log("All points have been clicked.");
-        // NEXT STEP TO COMPLETE BY MONDAY
+
+        // KEVIN: USELESS PART GOES (Analyze prediction points)
+        // 1. Set up function to start storing 50 points in [script.js] and return it in calibration file
+        // 2. Stop storing points after 5 seconds (5000ms)
+        // 2.1 Take points and calculate
     }
     
 }
