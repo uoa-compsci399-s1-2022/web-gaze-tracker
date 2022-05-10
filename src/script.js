@@ -1,6 +1,9 @@
 // Faceapi eye points
 const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
 const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
+// Global Pupil Data coordinates to be used in calibration.js file
+let newPmiX; 
+let newPmiY;
 
 // Create video element
 const video = document.createElement("VIDEO")
@@ -241,8 +244,9 @@ video.addEventListener('play', () => {
                     totalY += element[1]
                     counter++
                 })
-                const newPmiX = totalX / counter
-                const newPmiY = totalY / counter
+                newPmiX = totalX / counter
+                newPmiY = totalY / counter
+                // getAllPoints(newPmiX, newPmiY); //Get points to sort through
 
 
                 // coordinates for main image
@@ -375,3 +379,7 @@ const calculateStartAndDistance = (eye, padding) => {
 
     return [minX, minY, maxX - minX, maxY - minY]
 }
+
+// function getAllPoints(x, y) {
+//     return [x, y];
+// }

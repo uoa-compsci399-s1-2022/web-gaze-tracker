@@ -1,4 +1,13 @@
-function drawCalibrationPoints () {
+// ---------- GLOBAL VARIABLES --------------------------------
+let calibrationPoints = {};     // The object that stores click counts with point id as the key.
+let totalPointsCalibrated = 0;  // The number of total points calibrated.
+
+
+/** - This function draws all 9 calibration points on the screen into the DOM
+ * @todo - Prepare for @NatRivers changes to dynamic point sprites
+ * @return {None}
+ * */
+drawCalibrationPoints = () => {
   // create a new div container to draw our calibration points
   const calibrationDiv = document.createElement("div");
   calibrationDiv.id = "calibration";
@@ -16,23 +25,22 @@ function drawCalibrationPoints () {
 
   document.body.appendChild(calibrationDiv);
 
-} // ---- drawCalibrationPoints()
+} // drawCalibrationPoints()
 
-//  The object that stores click counts with point id as the key.
-let calibrationPoints = {};
-//  The number of total points calibrated.
-let totalPointsCalibrated = 0;
-
-//  The main function where we check if all points are clicked
-// - We set the opacity and color to yellow once each point is calibrated
-function calibrateAllPoints() {
+/** - Check all points are clicked, gather data to compute, complete calibration
+ * @todo - Compute all calibration points
+ * @todo - Implement accuracy computation tbc by @kr0720
+ * @param {interface} event The Event interface represents an event which takes place in the DOM.
+ * @return {None}
+ * */
+calibrateAllPoints = (event) => {
 
     let keys = Object.keys(calibrationPoints);
-    let getPointID = this.getAttribute('id');
+    let getPointID = event.currentTarget.getAttribute('id');
 
-    //  Checking the existence of current point id.
-    //  If it doesn't exist in the calibrationPoints object, initialize it to 1.
-    //  Else increase the value stored in current point id by 1.
+    // Checking the existence of current point id. 
+    // If not exist in calibrationPoints object, initialize it to 1.
+    // Else increase the value stored in current point id by 1.
     if (!keys.includes(getPointID)) {
         calibrationPoints[getPointID] = 1;
     } else {
@@ -52,10 +60,10 @@ function calibrateAllPoints() {
     } else if (calibrationPoints[getPointID] < 5) {
         document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2;
 
-        // RICKY ----- PREREQ CRUCIAL STEP: -----
-        // store (--> newPmiX, --> newPmiY) in a global variable
-        // call the helper calculation function
-        // Return or save this in a global [array] - For Amri to use
+        // use newPmix newPmiY defined in global variable to map point to gaze
+        let calculatedPoints = calculatePupilDataToScreen(newPmiX, newPmiY);
+        // *** Return or save this in a global [array] - For Amri to use
+        console.log(`TEST: Calculated all points *successfully: Rounded percentage: ${calculatedPoints}`);
     };
 
     // This logs out the specific point id and the number of clicks per point
@@ -73,7 +81,23 @@ function calibrateAllPoints() {
         // 2.1 Take points and calculate
     }
     
-}
+} // calibrateAllPoints
 
+/** - HELPER function: Called when user clicks each of the 9 calibration points 
+ * @todo Complete all accuracy calculations and predictions
+ * @param {number}  x the X coordinate from the newPmiX variable define in script.js
+ * @param {number}  y the Y coordinate from the newPmiY variable defined in script.js
+ * @return {number} Returns a rounded average percentage? 
+ * */
+calculatePupilDataToScreen = (x, y) => {
+    // Do main calculation with 5 x,y points of screen.
+    console.log(`Here's our x(${x}) and y(${y}) coordinate when user has stared and clicked on a point`)
+
+    //example return
+    return Math.round(x+y);
+} // 
+
+
+// ---------------------------------------------------------
 // call the drawCalibrationPoints function when window loads.
 window.onload =  drawCalibrationPoints;
