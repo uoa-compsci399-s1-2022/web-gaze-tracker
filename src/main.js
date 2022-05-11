@@ -1,17 +1,8 @@
-// Faceapi eye points
-const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
-const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
+import { clearCanvas, croppedCanvas2, croppedCanvasLeft, croppedCanvasRight, video } from './modules/elements.js'
 
-// Create video element
-const video = document.createElement("VIDEO")
-video.id = "video"
-video.width = 750
-video.height = 560
-video.autoplay = true
-video.defaultMuted = true
-video.style.position = "absolute"
-video.style.top = 0 + "px"
-video.style.left = 0 + "px"
+// Faceapi eye points
+// const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
+// const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
 
 // Load video element and append to body
 video.load()
@@ -33,46 +24,17 @@ function startVideo() {
 
 // Video event listener (executes when the webcam starts)
 video.addEventListener('play', () => {
-    // Create canvas for faceapi overlay
-    const canvas = faceapi.createCanvasFromMedia(video)
-    canvas.id = "videoCanvas"
-    canvas.style.position = "absolute"
-    canvas.style.top = 0 + "px"
-    canvas.style.left = 0 + "px"
-    document.body.append(canvas)
-
-    // create second canvas for adding filters
-    const croppedCanvasLeft = document.createElement("CANVAS")
-    croppedCanvasLeft.id = "canvasOutputLeft"
-    croppedCanvasLeft.width = 200
-    croppedCanvasLeft.height = 200
-    croppedCanvasLeft.style.position = "absolute"
-    croppedCanvasLeft.style.top = 0 + "px"
-    croppedCanvasLeft.style.left = 750 + "px"
-    document.body.append(croppedCanvasLeft)
-
-    const croppedCanvasRight = document.createElement("CANVAS")
-    croppedCanvasRight.id = "canvasOutputRight"
-    croppedCanvasRight.width = 200
-    croppedCanvasRight.height = 200
-    croppedCanvasRight.style.position = "absolute"
-    croppedCanvasRight.style.top = 0 + "px"
-    croppedCanvasRight.style.left = 950 + "px"
-    document.body.append(croppedCanvasRight)
-
-    // create second canvas for adding filters
-    const croppedCanvas2 = document.createElement("CANVAS")
-    croppedCanvas2.id = "canvasOutput2Left"
-    croppedCanvas2.width = 200
-    croppedCanvas2.height = 200
-    croppedCanvas2.style.position = "absolute"
-    croppedCanvas2.style.top = 200 + "px"
-    croppedCanvas2.style.left = 750 + "px"
-    document.body.append(croppedCanvas2)
+    // Create canvas for faceapi overlay from video feed
+    const faceapiCanvas = faceapi.createCanvasFromMedia(video)
+    faceapiCanvas.id = "faceapiCanvas"
+    faceapiCanvas.style.position = "absolute"
+    faceapiCanvas.style.top = 0 + "px"
+    faceapiCanvas.style.left = 0 + "px"
+    document.body.append(faceapiCanvas)
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
-    faceapi.matchDimensions(canvas, displaySize)
+    faceapi.matchDimensions(faceapiCanvas, displaySize)
 
     // Main loop where face detection and eye tracking takes place.
     // Repeats every 30 ms
@@ -81,12 +43,17 @@ video.addEventListener('play', () => {
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
 
         // drawing detection and landmarks on clear canvas
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        faceapiCanvas.getContext('2d').drawImage(video, 0, 0, faceapiCanvas.width, faceapiCanvas.height)
         // faceapi.draw.drawDetections(canvas, resizedDetections)
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+        faceapi.draw.drawFaceLandmarks(faceapiCanvas, resizedDetections)
 
         // extracting eye data
         if (detections.length === 1) {
+            // add canvases to document
+            document.body.append(croppedCanvasLeft)
+            document.body.append(croppedCanvasRight)
+            document.body.append(croppedCanvas2)
+
             // get left and right eye
             const leftEye = detections[0].landmarks.getLeftEye()
             const rightEye = detections[0].landmarks.getRightEye()
@@ -114,7 +81,6 @@ video.addEventListener('play', () => {
                 croppedCanvasRight.width, croppedCanvasRight.height
             )
 
-
             // OpenCV adaptive threshold filter applied to the video 
             const imgSrc = cv.imread('canvasOutputLeft')
             let dst = new cv.Mat()
@@ -128,9 +94,7 @@ video.addEventListener('play', () => {
             imgSrc.delete()
             dst.delete()
 
-
-            let canvas = document.getElementById("canvasOutputLeft")
-            let ctx = canvas.getContext('2d')
+            let ctx = croppedCanvasLeft.getContext('2d')
             let imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
             // Make a copy of original grayscale data
             let originalGrayScaleData = Object.assign([], imgData.data)
@@ -160,14 +124,13 @@ video.addEventListener('play', () => {
             }
 
             // draw CDF filtered image
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            canvas.width = imgData.width
-            canvas.height = imgData.height
+            ctx.clearRect(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
+            croppedCanvasLeft.width = imgData.width
+            croppedCanvasLeft.height = imgData.height
             ctx.putImageData(imgData, 0, 0)
 
-
             // minimim filter applied (SEARCH FOR MORE FILTERS TO APPLY)
-            src = cv.imread('canvasOutputLeft')
+            const src = cv.imread('canvasOutputLeft')
             dst = new cv.Mat()
             let M = cv.Mat.ones(5, 5, cv.CV_8U)
             let anchor = new cv.Point(-1, -1)
@@ -180,8 +143,6 @@ video.addEventListener('play', () => {
 
 
             // Getting image data after application of minimum filter
-            canvas = document.getElementById("canvasOutputLeft")
-            ctx = canvas.getContext('2d')
             imgData = ctx.getImageData(0, 0, croppedCanvasLeft.width, croppedCanvasLeft.height)
 
             // Search for brightest possible value Pixel with Minimum Intensity (PMI)
@@ -223,7 +184,7 @@ video.addEventListener('play', () => {
                 let averageIntensity70x70 = getAverageIntensity(grayScaleMatrix, pmiX, pmiY, 35, croppedCanvasLeft)
 
                 // look into grayScale 100x100 area around pmi and check against AI in 70x70
-                arrayOfPoints = []
+                const arrayOfPoints = []
                 for (let row = Math.max(pmiY - 50, 0); row < Math.min(pmiY + 50, croppedCanvasLeft.height); row++) {
                     for (let pixel = Math.max(pmiX - 50, 0); pixel < Math.min(pmiX + 50, croppedCanvasLeft.width); pixel++) {
                         if (grayScaleMatrix[row][pixel] < averageIntensity70x70) {
@@ -233,8 +194,8 @@ video.addEventListener('play', () => {
                 }
 
                 // calculating average coordinates
-                totalX = 0
-                totalY = 0
+                let totalX = 0
+                let totalY = 0
                 counter = 0
                 arrayOfPoints.forEach(element => {
                     totalX += element[0]
@@ -251,8 +212,8 @@ video.addEventListener('play', () => {
                 // console.log(row, column, mainImageRow, mainImageColumn)
 
                 // drawing circle at location of pmi
-                let c = document.getElementById("canvasOutput2Left")
-                let ctxx = c.getContext("2d")
+                // let c = document.getElementById("canvasOutput2Left")
+                let ctxx = croppedCanvas2.getContext("2d")
                 ctxx.lineWidth = 2
 
                 ctxx.beginPath()
@@ -277,6 +238,10 @@ video.addEventListener('play', () => {
                 ctxx.arc(newPmiX, newPmiY, 2, 0, 2 * Math.PI)
                 ctxx.stroke()
             }
+        } else {
+            clearCanvas(croppedCanvasLeft)
+            clearCanvas(croppedCanvasRight)
+            clearCanvas(croppedCanvas2)
         }
     }, 30)
 })
