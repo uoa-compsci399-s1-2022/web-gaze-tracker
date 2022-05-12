@@ -1,3 +1,6 @@
+/** Applies image processing needed before pupil detection
+*
+*/
 const applyImageProcessing = () => {
   // OpenCV adaptive threshold filter applied to the video 
   const imgSrc = cv.imread('canvasOutputLeft')

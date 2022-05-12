@@ -1,10 +1,9 @@
-
 import { croppedCanvasLeft, croppedCanvasRight } from "./elements.js"
 
 /**
  * Draws a cropped canvas for each eye
  * 
- * @param {any} detections 
+ * @param {any} detections detections object from faceapi
  */
 const drawCroppedCanvases = (detections) => {
   // get left and right eye
