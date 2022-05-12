@@ -1,11 +1,11 @@
-import { croppedCanvasLeft, croppedCanvasRight } from "./elements.js"
-
 /**
  * Draws a cropped canvas for each eye
  * 
  * @param {any} detections detections object from faceapi
+ * @param {HTMLElement} leftCanvas canvas for left eye
+ * @param {HTMLElement} rightCanvas canvas for right eye
  */
-const drawCroppedCanvases = (detections) => {
+const drawCroppedCanvases = (detections, leftCanvas, rightCanvas) => {
   // get left and right eye
   const leftEye = detections[0].landmarks.getLeftEye()
   const rightEye = detections[0].landmarks.getRightEye()
@@ -14,21 +14,21 @@ const drawCroppedCanvases = (detections) => {
   const [leftStartX, leftStartY, leftDisX, leftDisY] = calculateStartAndDistance(leftEye, padding)
   const [rightStartX, rightStartY, rightDisX, rightDisY] = calculateStartAndDistance(rightEye, padding)
 
-  // draw cropped video onto canvas
-  croppedCanvasLeft.getContext('2d').drawImage(
+  // draw cropped video onto left canvas
+  leftCanvas.getContext('2d').drawImage(
     video,
     leftStartX, leftStartY,                                 // start position
     leftDisX, leftDisY,                                     // area to crop
     0, 0,                                                   // draw from point (0, 0) in the canvas,
-    croppedCanvasLeft.width, croppedCanvasLeft.height
+    leftCanvas.width, leftCanvas.height
   )
 
-  croppedCanvasRight.getContext('2d').drawImage(
+  rightCanvas.getContext('2d').drawImage(
     video,
     rightStartX, rightStartY,                                 // start position
     rightDisX, rightDisY,                                     // area to crop
     0, 0,                                                     // draw from point (0, 0) in the canvas,
-    croppedCanvasRight.width, croppedCanvasRight.height
+    rightCanvas.width, rightCanvas.height
   )
 }
 

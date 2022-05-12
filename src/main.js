@@ -50,7 +50,7 @@ video.addEventListener('play', () => {
         // faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(faceapiCanvas, resizedDetections)
 
-        // extracting eye data
+        // Only continue if one face is detected
         if (detections.length === 1) {
             // add canvases to document
             document.body.append(croppedCanvasLeft)
@@ -58,21 +58,21 @@ video.addEventListener('play', () => {
             document.body.append(croppedCanvas2)
 
             // Eye detection
-            drawCroppedCanvases(detections)
+            drawCroppedCanvases(detections, croppedCanvasLeft, croppedCanvasRight)
             // Image Processing
-            applyImageProcessing()
+            applyImageProcessing(croppedCanvasLeft, croppedCanvas2)
 
             // Pupil Detection
             // Get intensity threshold from slider 
             const intensityThreshold = document.getElementById("myRange").value / 1000
             document.getElementById("intensityThreshold").innerHTML = intensityThreshold
 
-            evaluateIntensity(intensityThreshold)
-            applyMinimumFilter()
-            const pmiIndex = getPMIIndex()
+            evaluateIntensity(croppedCanvasLeft, intensityThreshold)
+            applyMinimumFilter(croppedCanvasLeft)
+            const pmiIndex = getPMIIndex(croppedCanvasLeft)
             if (pmiIndex !== -1) {
-                const [pupilX, pupilY] = getPupils(pmiIndex)
-                drawPupilRegion(pupilX, pupilY)
+                const [pupilX, pupilY] = getPupils(croppedCanvasLeft, pmiIndex)
+                drawPupilRegion(croppedCanvas2, pupilX, pupilY)
             }
         } else {
             clearCanvas(croppedCanvasLeft)

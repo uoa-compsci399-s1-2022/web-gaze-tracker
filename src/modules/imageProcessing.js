@@ -1,15 +1,17 @@
 /** Applies image processing needed before pupil detection
 *
+* @param {HTMLElement} canvas canvas to apply image processing to
+* @param {HTMLElement} debugCanvas debugging canvas
 */
-const applyImageProcessing = () => {
+const applyImageProcessing = (canvas, debugCanvas) => {
   // OpenCV adaptive threshold filter applied to the video 
-  const imgSrc = cv.imread('canvasOutputLeft')
+  const imgSrc = cv.imread(canvas.id)
   let dst = new cv.Mat()
   cv.cvtColor(imgSrc, dst, cv.COLOR_RGBA2GRAY, 0)
-  cv.imshow('canvasOutputLeft', dst)
+  cv.imshow(canvas.id, dst)
 
   // debugging canvas
-  cv.imshow('canvasOutput2Left', dst)
+  cv.imshow(debugCanvas.id, dst)
 
   imgSrc.delete()
   dst.delete()
