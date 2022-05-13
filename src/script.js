@@ -2,7 +2,7 @@
 const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
 const RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
 // Global Pupil Data coordinates to be used in calibration.js file
-let newPmiX; 
+let newPmiX;
 let newPmiY;
 
 // Create video element
@@ -246,7 +246,6 @@ video.addEventListener('play', () => {
                 })
                 newPmiX = totalX / counter
                 newPmiY = totalY / counter
-                // getAllPoints(newPmiX, newPmiY); //Get points to sort through
 
 
                 // coordinates for main image
@@ -376,10 +375,5 @@ const calculateStartAndDistance = (eye, padding) => {
     let maxY = Math.max(maxY1, maxY2) + padding
 
     //---- Store all the points in this function to be used in our calibration parts
-
     return [minX, minY, maxX - minX, maxY - minY]
 }
-
-// function getAllPoints(x, y) {
-//     return [x, y];
-// }

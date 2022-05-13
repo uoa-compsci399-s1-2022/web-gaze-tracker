@@ -1,6 +1,7 @@
 // ---------- GLOBAL VARIABLES --------------------------------
 let calibrationPoints = {};     // The object that stores click counts with point id as the key.
 let totalPointsCalibrated = 0;  // The number of total points calibrated.
+let userGazePoints = {};        // Use this for mapping the coordinatess
 
 
 /** - This function draws all 9 calibration points on the screen into the DOM
@@ -52,18 +53,23 @@ calibrateAllPoints = (event) => {
     // - for each point, we check if user has clicked it 5 times
     // - if so, then disable point and display yellow point to complete
 
-    if (calibrationPoints[getPointID] == 5) {
-        document.getElementById(getPointID).style.backgroundColor = "yellow";
-        document.getElementById(getPointID).disabled = true;
-        totalPointsCalibrated += 1;
-
-    } else if (calibrationPoints[getPointID] < 5) {
-        document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2;
-
+    if (calibrationPoints[getPointID] <= 5) {
         // use newPmix newPmiY defined in global variable to map point to gaze
-        let calculatedPoints = calculatePupilDataToScreen(newPmiX, newPmiY);
-        // *** Return or save this in a global [array] - For Amri to use
-        console.log(`TEST: Calculated all points *successfully: Rounded percentage: ${calculatedPoints}`);
+        calculatePupilDataToScreen(getPointID, newPmiX, newPmiY);
+
+        if (calibrationPoints[getPointID] == 5) {
+            document.getElementById(getPointID).style.backgroundColor = "yellow";
+            document.getElementById(getPointID).disabled = true;
+            totalPointsCalibrated += 1;
+            // console.log(`number of coordinates stored: ${userGazePoints[getPointID].length}`);
+    
+        } else {
+            document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2;
+        }
+
+        // // *** Return or save this in a global [array] - For Amri to use
+        console.log(`TEST: User gaze points ${userGazePoints[getPointID]}`);
+
     };
 
     // This logs out the specific point id and the number of clicks per point
@@ -72,10 +78,21 @@ calibrateAllPoints = (event) => {
     // ---------------------------------------------------------------------
     // We use the points stored in here to analyze and compute the precision 
     // Total number of points calibrated should equal to 9
-    if ( totalPointsCalibrated == 9) {
-        console.log("All points have been clicked.");
 
-        // KEVIN: USELESS PART GOES (Analyze prediction points)
+
+    // Test if all points are stored in object for Amri to use.
+    if ( totalPointsCalibrated == 9) {
+        let keys = Object.keys(userGazePoints);
+        
+        console.log(`All points have been clicked!`);
+
+        for (let i = 0; keys.length > i; i++) {
+            for (let j = 0; userGazePoints[keys[i]].length > j; j++) {
+                console.log(`UserGazePoints object - for each ${keys[i]} these are the stored points: ( ${userGazePoints[keys[i]][j]} )`);
+            }
+        }
+        /** @todo - Blocked: needs mapping part to work */
+        // --------- FEATURE: Calculating Accuracy (Analyze prediction points) --------------------------
         // 1. Set up function to start storing 50 points in [script.js] and return it in calibration file
         // 2. Stop storing points after 5 seconds (5000ms)
         // 2.1 Take points and calculate
@@ -87,16 +104,25 @@ calibrateAllPoints = (event) => {
  * @todo Complete all accuracy calculations and predictions
  * @param {number}  x the X coordinate from the newPmiX variable define in script.js
  * @param {number}  y the Y coordinate from the newPmiY variable defined in script.js
- * @return {number} Returns a rounded average percentage? 
  * */
-calculatePupilDataToScreen = (x, y) => {
+calculatePupilDataToScreen = (pointID, x, y) => {
     // Do main calculation with 5 x,y points of screen.
-    console.log(`Here's our x(${x}) and y(${y}) coordinate when user has stared and clicked on a point`)
+    // Round newPmiY/X variables to an integer for developing purposes.
+    x = Math.round(x);
+    y = Math.round(y);
 
-    //example return
-    return Math.round(x+y);
-} // 
+    let keys = Object.keys(userGazePoints);
+    let userPoints = [x,y];
 
+    if (!keys.includes(pointID)) {
+        userGazePoints[pointID] = [userPoints];
+    } else {
+        userGazePoints[pointID].push(userPoints);
+    }
+
+    console.log(`calculatePupilDataToScreen executed`);
+
+} // calculatePupilDataToScreen()
 
 // ---------------------------------------------------------
 // call the drawCalibrationPoints function when window loads.
