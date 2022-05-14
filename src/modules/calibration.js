@@ -1,3 +1,6 @@
+import { clearCanvas, croppedCanvas2, croppedCanvasLeft, croppedCanvasRight, video } from './elements.js'
+import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './pupilDetection.js'
+
 // ---------- GLOBAL VARIABLES --------------------------------
 let calibrationPoints = {};     // The object that stores click counts with point id as the key.
 let totalPointsCalibrated = 0;  // The number of total points calibrated.
@@ -8,7 +11,7 @@ let userGazePoints = {};        // Use this for mapping the coordinatess
  * @todo - Prepare for @NatRivers changes to dynamic point sprites
  * @return {None}
  * */
-drawCalibrationPoints = () => {
+const drawCalibrationPoints = () => {
   // create a new div container to draw our calibration points
   const calibrationDiv = document.createElement("div");
   calibrationDiv.id = "calibration";
@@ -35,7 +38,7 @@ drawCalibrationPoints = () => {
  * @param {interface} event The Event interface represents an event which takes place in the DOM.
  * @return {None}
  * */
-calibrateAllPoints = (event) => {
+const calibrateAllPoints = (event) => {
 
     let keys = Object.keys(calibrationPoints);
     let getPointID = event.currentTarget.getAttribute('id');
@@ -54,7 +57,11 @@ calibrateAllPoints = (event) => {
 
     if (calibrationPoints[getPointID] <= 5) {
         // use newPmix newPmiY defined in global variable to map point to gaze
-        calculatePupilDataToScreen(getPointID, newPmiX, newPmiY);
+        const pmiIndex = getPMIIndex(croppedCanvasLeft)
+        if (pmiIndex !== -1) {
+            const [pupilX, pupilY] = getPupils(croppedCanvasLeft, pmiIndex)
+            calculatePupilDataToScreen(getPointID, pupilX, pupilY);
+        }
 
         if (calibrationPoints[getPointID] == 5) {
             document.getElementById(getPointID).style.backgroundColor = "yellow";
@@ -97,7 +104,7 @@ calibrateAllPoints = (event) => {
  * @param {number}  x the X coordinate from the newPmiX variable define in script.js
  * @param {number}  y the Y coordinate from the newPmiY variable defined in script.js
  * */
-calculatePupilDataToScreen = (pointID, x, y) => {
+const calculatePupilDataToScreen = (pointID, x, y) => {
     // Do main calculation with 5 x,y points of screen.
     // Round newPmiY/X variables to an integer for developing purposes.
     x = Math.round(x);
@@ -112,10 +119,8 @@ calculatePupilDataToScreen = (pointID, x, y) => {
         userGazePoints[pointID].push(userPoints);
     }
 
-    console.log(`calculatePupilDataToScreen executed`);
+    console.log(`calculatePupilDataToScreen executed, this is point${pointID}, click count = ${calibrationPoints[pointID]}`);
 
-} // calculatePupilDataToScreen()
+} 
 
-// ---------------------------------------------------------
-// call the drawCalibrationPoints function when window loads.
-window.onload =  drawCalibrationPoints;
+export { drawCalibrationPoints, calibrateAllPoints, calculatePupilDataToScreen, calibrationPoints, userGazePoints, totalPointsCalibrated };
