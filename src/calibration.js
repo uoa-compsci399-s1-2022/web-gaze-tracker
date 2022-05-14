@@ -12,10 +12,11 @@ drawCalibrationPoints = () => {
   // create a new div container to draw our calibration points
   const calibrationDiv = document.createElement("div");
   calibrationDiv.id = "calibration";
-  calibrationDiv.innerHTML = "Click each of the calibration points 5 times";
+  calibrationDiv.style = "position: absolute; top: 55%;";
+  calibrationDiv.innerHTML = "<p>Click each of the calibration points 5 times</p>";
 
   //draw each point on to the screen made with input buttons
-  for (i = 1; i < 10; i++) {
+  for (let i = 1; i < 10; i++) {
         const point = document.createElement("input");
         point.type = "button";
         point.className = "Calibration";
@@ -26,7 +27,7 @@ drawCalibrationPoints = () => {
 
   document.body.appendChild(calibrationDiv);
 
-} // drawCalibrationPoints()
+}
 
 /** - Check all points are clicked, gather data to compute, complete calibration
  * @todo - Compute all calibration points
@@ -39,9 +40,7 @@ calibrateAllPoints = (event) => {
     let keys = Object.keys(calibrationPoints);
     let getPointID = event.currentTarget.getAttribute('id');
 
-    // Checking the existence of current point id. 
-    // If not exist in calibrationPoints object, initialize it to 1.
-    // Else increase the value stored in current point id by 1.
+    // Updating the click count of the calibration points
     if (!keys.includes(getPointID)) {
         calibrationPoints[getPointID] = 1;
     } else {
@@ -61,19 +60,12 @@ calibrateAllPoints = (event) => {
             document.getElementById(getPointID).style.backgroundColor = "yellow";
             document.getElementById(getPointID).disabled = true;
             totalPointsCalibrated += 1;
-            // console.log(`number of coordinates stored: ${userGazePoints[getPointID].length}`);
-    
         } else {
             document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2;
         }
 
-        // // *** Return or save this in a global [array] - For Amri to use
-        console.log(`TEST: User gaze points ${userGazePoints[getPointID]}`);
-
     };
 
-    // This logs out the specific point id and the number of clicks per point
-    console.log(`This is point ${getPointID}, number of click: ${calibrationPoints[getPointID]}`);
 
     // ---------------------------------------------------------------------
     // We use the points stored in here to analyze and compute the precision 
