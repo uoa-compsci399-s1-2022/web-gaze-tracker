@@ -1,15 +1,17 @@
-import { clearCanvas, croppedCanvas2, croppedCanvasLeft, croppedCanvasRight, video } from './elements.js'
-import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './pupilDetection.js'
+import { croppedCanvasLeft } from './elements.js'
+import { getPMIIndex, getPupils } from './pupilDetection.js'
 
 // ---------- GLOBAL VARIABLES --------------------------------
 let calibrationPoints = {}     // The object that stores click counts with point id as the key.
-let totalPointsCalibrated = 0  // The number of total points calibrated.
-let userGazePoints = {}        // Use this for mapping the coordinatess.
+let totalPointsCalibrated = 0  // The number of total points calibrated. Change to boolean
+// Use this for mapping the coordinates.
+let userGazePoints = {
+    calibrationComplete: false
+}
 
-
-/** - This function draws all 9 calibration points on the screen into the DOM
- * @return {None}
- * */
+/** - Creates a modal popup that asks the user to start calibration 
+ * @return {None} 
+* */
 const startCalibration = () => {
     // Setup modal html elements
     let modalWindow = document.createElement('div')
@@ -38,11 +40,14 @@ const startCalibration = () => {
 
     modalStart.id = 'startButton'
     modalStart.onclick = () => {
-        drawCalibrationPoints()
+        drawCalibrationPoints() // Drawing points on screen
         modal.style.display = "none"
     }
 }
 
+/** Draws 9 calibration points on the screen
+ * @return {None}
+ **/
 const drawCalibrationPoints = () => {
     // create a new div container to draw our calibration points
     const calibrationDiv = document.createElement("div")
@@ -57,25 +62,25 @@ const drawCalibrationPoints = () => {
             point.className = "Calibration"
             point.id = `Pt${i}`
             calibrationDiv.appendChild(point)
+
+            userGazePoints[point.id] = {
+                pupilPos: [],
+                calibrationPointsPos: [],
+            }
             point.addEventListener("click", calibrateAllPoints)
     }
-
     document.body.appendChild(calibrationDiv)
-
 }
 
 /** - Calibrate all points and store pupil coordinates
  * @param {interface} event The Event interface represents an event which takes place in the DOM.
- * @return {None}
  * */
 const calibrateAllPoints = (event) => {
-
     let keys = Object.keys(calibrationPoints)
-    let getPointID = event.currentTarget.getAttribute('id')
+    let pointID = event.currentTarget.getAttribute('id')
     let pupilX, pupilY
     let pupilDetectionPrompt = document.getElementById('pupil_detection_prompt')
 
-    
     // Get the pupil coordinates
     const pmiIndex = getPMIIndex(croppedCanvasLeft)
     if (pmiIndex !== -1) {
@@ -87,24 +92,27 @@ const calibrateAllPoints = (event) => {
     if (!isNaN(pupilX) && !isNaN(pupilY)) {
         pupilDetectionPrompt.style.display = 'none'
         // Updating the click count of the calibration points
-        if (!keys.includes(getPointID)) {
-            calibrationPoints[getPointID] = 1
+        if (!keys.includes(pointID)) {
+            calibrationPoints[pointID] = 1
         } else {
-            calibrationPoints[getPointID]++
+            calibrationPoints[pointID]++
         }
 
         // Store the valid pupil coordinates on a counted click
-        if (calibrationPoints[getPointID] <= 5) {
-            storePupilCoordinates(getPointID, pupilX, pupilY)
+        if (calibrationPoints[pointID] <= 5) {
+            // Storing cursor coordinates as the calibration point position.
+            userGazePoints[pointID]["calibrationPointsPos"].push([event.clientX, event.clientY])
+            
+            // Storing pupil coordinates
+            storePupilCoordinates(pointID, pupilX, pupilY)
 
-            if (calibrationPoints[getPointID] == 5) {
-                document.getElementById(getPointID).style.backgroundColor = "yellow"
-                document.getElementById(getPointID).disabled = true
+            if (calibrationPoints[pointID] == 5) {
+                document.getElementById(pointID).style.backgroundColor = "yellow"
+                document.getElementById(pointID).disabled = true
                 totalPointsCalibrated += 1
             } else {
-                document.getElementById(getPointID).style.opacity = 0.2*calibrationPoints[getPointID]+0.2
+                document.getElementById(pointID).style.opacity = 0.2*calibrationPoints[pointID]+0.2
             }
-    
         }
         
     } else {
@@ -114,26 +122,21 @@ const calibrateAllPoints = (event) => {
         pupilDetectionPrompt.style.display = 'block'
     }
 
+    if (totalPointsCalibrated == 9) {
+        userGazePoints.calibrationComplete = true
+        // hide calibration points
+        const points = document.getElementsByClassName("Calibration")
+        for (let i = 0; i < points.length; i ++) {
+            points[i].style.visibility = 'hidden';
+        }
+    }
 
     /** FEATURE: Calculating Accuracy (Analyze prediction points)
-     * @todo - Blocked: needs mapping part to work 
+     * @todo - Blocked: needs mapping part to work
      * 1. Set up function to start storing 50 points in [script.js] and return it in calibration file
      * 2. Stop storing points after 5 seconds (5000ms)
      * 2.1 Take points and calculate
      **/
-    if ( totalPointsCalibrated == 9) {
-        alert("All points are calibrated!")
-
-        // Used for testing:
-        let userGazeKeys = Object.keys(userGazePoints)
-    
-        for (let i = 0; userGazeKeys.length > i; i++) {
-            for (let j = 0; userGazePoints[userGazeKeys[i]].length > j; j++) {
-                console.log(`UserGazePoints object - for each ${userGazeKeys[i]} these are the stored points: ( ${userGazePoints[userGazeKeys[i]][j]} )`)
-            }
-        }
-    }
-    
 }
 
 /** Storing pupil coordinates for calculating precision and analysis.
@@ -145,15 +148,15 @@ const storePupilCoordinates = (pointID, pupilX, pupilY) => {
     let x = Math.round(pupilX)
     let y = Math.round(pupilY)
 
-    let keys = Object.keys(userGazePoints)
+    // let keys = Object.keys(userGazePoints)
     let userPoints = [x,y]
 
     // Storing all points in userGazePoints object
-    if (!keys.includes(pointID)) {
-        userGazePoints[pointID] = [userPoints]
+    if (userGazePoints[pointID]["pupilPos"].length == 0) {
+        userGazePoints[pointID]["pupilPos"] = [userPoints]
     } else {
-        userGazePoints[pointID].push(userPoints)
+        userGazePoints[pointID]["pupilPos"].push(userPoints)
     }
-} 
+}
 
-export { drawCalibrationPoints, calibrateAllPoints, startCalibration, storePupilCoordinates, calibrationPoints, userGazePoints, totalPointsCalibrated }
+export { startCalibration, userGazePoints }
