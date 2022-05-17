@@ -149,21 +149,21 @@ const drawPupilRegion = (canvas, pupilX, pupilY) => {
   let ctx = canvas.getContext("2d")
   ctx.lineWidth = 2
 
-  ctx.beginPath()
-  ctx.strokeStyle = 'blue'
-  ctx.rect(pmiX - 50, pmiY - 50, 100, 100)
-  ctx.stroke()
+  // ctx.beginPath()
+  // ctx.strokeStyle = 'blue'
+  // ctx.rect(pmiX - 50, pmiY - 50, 100, 100)
+  // ctx.stroke()
 
-  ctx.beginPath()
-  ctx.strokeStyle = 'purple'
-  ctx.rect(pmiX - 35, pmiY - 35, 70, 70)
-  ctx.stroke()
+  // ctx.beginPath()
+  // ctx.strokeStyle = 'purple'
+  // ctx.rect(pmiX - 35, pmiY - 35, 70, 70)
+  // ctx.stroke()
 
-  // pmi before
-  ctx.beginPath()
-  ctx.strokeStyle = 'green'
-  ctx.arc(pmiX, pmiY, 2, 0, 2 * Math.PI)
-  ctx.stroke()
+  // // pmi before
+  // ctx.beginPath()
+  // ctx.strokeStyle = 'green'
+  // ctx.arc(pmiX, pmiY, 2, 0, 2 * Math.PI)
+  // ctx.stroke()
 
   // pmi after the averageIntesity calculations
   ctx.beginPath()
