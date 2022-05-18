@@ -3,6 +3,7 @@ import { clearCanvas, croppedCanvas2, croppedCanvasLeft, croppedCanvasRight, vid
 import { applyImageProcessing } from './modules/imageProcessing.js'
 import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './modules/pupilDetection.js'
 import { startCalibration, userGazePoints } from './modules/calibration.js'
+import { drawCursor } from './modules/mapping.js'
 
 // Faceapi eye points
 // const LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
@@ -35,6 +36,9 @@ video.addEventListener('play', () => {
     faceapiCanvas.style.top = 0 + "px"
     faceapiCanvas.style.left = 0 + "px"
     document.body.append(faceapiCanvas)
+
+
+
 
     // Set faceapi dimensions
     const displaySize = { width: video.width, height: video.height }
@@ -74,8 +78,13 @@ video.addEventListener('play', () => {
             if (pmiIndex !== -1) {
                 const [pupilX, pupilY] = getPupils(croppedCanvasLeft, pmiIndex)
                 drawPupilRegion(croppedCanvas2, pupilX, pupilY)
+
+                // mapping 
+                if (userGazePoints.calibrationComplete) {
+                    const [cursorX, cursorY] = drawCursor(document, pupilX, pupilY)
+                }
             }
-            // if (userGazePoints.calibrationComplete) console.log(userGazePoints)
+            
         } else {
             clearCanvas(croppedCanvasLeft)
             clearCanvas(croppedCanvasRight)
