@@ -12,65 +12,74 @@
     </head>
     <body>
         <div id="wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light" id="top-nav">
-                <div class="container-xl">
-                    <a class="navbar-brand" href="index.html">
-                        Peeper.js
-                        <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-                        <a class="nav-link" href="example.html">Example</a>
-                        <a class="nav-link" href="documentation.html">Documentation</a>
-                        <a class="nav-link" href="index.html#team">Contact</a>
+            <div class="container">
+                <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" id="top-nav">
+                    <div class="container-fluid">
+                        
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                            <a class="nav-link" href="example.html">Example</a>
+                            <a class="nav-link" href="documentation.html">Documentation</a>
+                            <a class="nav-link" href="index.html#team">Contact</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
     
 
             <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <h3>Documentation <i class="bi bi-journal-code"></i></h3><br>
-                    <li><a href="#main">main.js</a></li>
-                        <ul>
-                            <li><a href="#startVideo"><code>startVideo()</code></a></li>
-                            <li><a href="#setInterval"><code>setInterval()</code></a></li>
-                        </ul>
-                    <li><a href="#calibration">Calibration.js</a></li>
-                        <ul>
-                            <li><a href="#startCalibration">startCalibration( )</a></li>
-                            <li><a href="#drawCalibration">drawCalibration( )</a></li>
-                            <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
-                            <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
-                        </ul>
-                    <li><a href="#elements">elements.js</a></li>
-                        <ul>
-                            <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
-                        </ul>
-                    <li><a href="#eyeDetection">eyeDetection.js</a></li>
-                        <ul>
-                            <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a></li>
-                            <li><a href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a></li>
-                        </ul>
-                    <li><a href="#imageProcessing">imageProcessing.js</a></li>
-                        <ul>
-                            <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a></li>
-                        </ul>
-                    <li><a href="#pupilDetection">pupilDetection.js</a></li>
-                        <ul>
-                            <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
-                            <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
-                            <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
-                            <li><a href="#getPupils"><code>getPupils()</code></a></li>
-                            <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
-                            <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a></li>
-                        </ul>
-                </ul>
+                <div id="sidebar-scroll">
+                    <ul class="sidebar-nav">
+                        <br>
+                        <a class="logo" href="index.html">
+                            Peeper.js
+                            <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30">
+                        </a>
+                        <hr style="border-top: 3px solid #bbb; margin: auto; margin-top: 15px; margin-bottom: 15px;">
+                        <h3 style="font-size: 23px; " id="documentation-heading">Documentation <i class="bi bi-journal-code"></i></h3><br>
+                        <details>
+                            <summary><a href="#main">main.js</a></summary>
+                            <ul class="subpoints">
+                                <li><a href="#startVideo"><code>startVideo()</code></a></li>
+                                <li><a href="#setInterval"><code>setInterval()</code></a></li>
+                            </ul>
+                        </details>
+                        <li><a href="#calibration">Calibration.js</a></li>
+                            <ul class="subpoints">
+                                <li><a href="#startCalibration">startCalibration( )</a></li>
+                                <li><a href="#drawCalibration">drawCalibration( )</a></li>
+                                <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
+                                <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
+                            </ul>
+                        <li><a href="#elements">elements.js</a></li>
+                            <ul class="subpoints">
+                                <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
+                            </ul>
+                        <li><a href="#eyeDetection">eyeDetection.js</a></li>
+                            <ul class="subpoints">
+                                <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a></li>
+                                <li><a href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a></li>
+                            </ul>
+                        <li><a href="#imageProcessing">imageProcessing.js</a></li>
+                            <ul class="subpoints">
+                                <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a></li>
+                            </ul>
+                        <li><a href="#pupilDetection">pupilDetection.js</a></li>
+                            <ul class="subpoints">
+                                <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
+                                <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
+                                <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
+                                <li><a href="#getPupils"><code>getPupils()</code></a></li>
+                                <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
+                                <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a></li>
+                            </ul>
+                    </ul>
+                </div>
             </div>
 
             <div id="page-content-wrapper">
