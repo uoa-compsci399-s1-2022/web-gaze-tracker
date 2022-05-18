@@ -36,7 +36,13 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <h3>Documentation <i class="bi bi-journal-code"></i></h3>
-                    <li><a href="#heading1">Heading1</a></li>
+                    <li><a href="#calibration">Calibration.js</a></li>
+                        <ul>
+                            <li><a href="#startCalibration">startCalibration( )</a></li>
+                            <li><a href="#drawCalibration">drawCalibration( )</a></li>
+                            <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
+                            <li><a href="#calibrateAllPoints">calibrationAllPoints( )</a></li>
+                        </ul>
                     <li><a href="#heading2">Heading2</a></li>
                     <li><a href="#heading3">Heading3</a></li>
                     <li><a href="#heading4">Heading4</a></li>
@@ -48,18 +54,89 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <section id="heading1">
-                                <h1>Heading1</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies ac odio aliquet lobortis. Sed sagittis efficitur turpis, vel rhoncus sapien aliquet eu. Proin vel justo sem. Curabitur egestas diam quis quam consequat, at efficitur magna luctus. Integer ultricies consectetur eros eget tempor. Sed porttitor efficitur quam, eu iaculis arcu lacinia eleifend. Mauris tristique, lorem at lobortis suscipit, magna neque porta diam, vitae eleifend dui libero vitae nisl. Nullam vitae varius lectus.
+                            <!-- use api prefix to style all api function doc container the same -->
+                            <section id="calibration">
+                                <div class="api_container">
+                                    <div class="api_overview">
+                                        <h1>Calibration.js</h1><br>
+                                        <h4>About</h4>
+                                        <p>This file contains the the setup to our calibration system. This is a crucial part of an eye gaze tracker, especially through a webcam, as there are different webcams and their capacity where accuracy is crucial in order to map your eyes to the screen.
+                                        </p>
 
-                                    Ut eu ullamcorper nibh. Nulla facilisi. Suspendisse rhoncus lectus sapien, id cursus quam efficitur id. Phasellus in tristique velit, in placerat felis. Donec sollicitudin, dui eu commodo rhoncus, dui dolor egestas dolor, vitae suscipit ante orci vel leo. Quisque nec massa ut ipsum bibendum fermentum pretium et nunc. Nam condimentum elit ut gravida sollicitudin. Aliquam vulputate vestibulum tellus a tempus. Cras dictum, velit sed iaculis consequat, arcu quam condimentum sem, id porttitor orci arcu sed velit. Sed euismod sem ac massa pretium dictum. Morbi non arcu non urna dignissim pharetra. Vivamus quis nibh sem. Cras ornare suscipit quam at placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur sem ipsum, cursus sed est id, pretium rhoncus justo. Sed ultricies congue vestibulum. Nunc dui.</p>
-                            </section>
-                            <section id="heading2">
-                                <h1>Heading2</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies ac odio aliquet lobortis. Sed sagittis efficitur turpis, vel rhoncus sapien aliquet eu. Proin vel justo sem. Curabitur egestas diam quis quam consequat, at efficitur magna luctus. Integer ultricies consectetur eros eget tempor. Sed porttitor efficitur quam, eu iaculis arcu lacinia eleifend. Mauris tristique, lorem at lobortis suscipit, magna neque porta diam, vitae eleifend dui libero vitae nisl. Nullam vitae varius lectus.
+                                        <div class="api_links">
+                                            
+                                            <h4>Global Variables</h4>
+                                                <code>calibrationPoints of Type: Object</code>
+                                                    <p>This object is created as each key as the 9 points and stores value as click counts for each of point as <code>type: number</code> This is used to keep track of each point and to check if user has finished calibration, while also storing a users gaze and disabling each point on completion (point turns yellow).<p>
+                                            
+                                                <code>userGazePoints of Type: Object</code>
+                                                    <p>Stores coordinates when user clicks on each of the nine points. These points are then passed into our mapping functionality in mapping.js to calculate the average of the 5 gaze points for each point.</p>
 
-Ut eu ullamcorper nibh. Nulla facilisi. Suspendisse rhoncus lectus sapien, id cursus quam efficitur id. Phasellus in tristique velit, in placerat felis. Donec sollicitudin, dui eu commodo rhoncus, dui dolor egestas dolor, vitae suscipit ante orci vel leo. Quisque nec massa ut ipsum bibendum fermentum pretium et nunc. Nam condimentum elit ut gravida sollicitudin. Aliquam vulputate vestibulum tellus a tempus. Cras dictum, velit sed iaculis consequat, arcu quam condimentum sem, id porttitor orci arcu sed velit. Sed euismod sem ac massa pretium dictum. Morbi non arcu non urna dignissim pharetra. Vivamus quis nibh sem. Cras ornare suscipit quam at placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur sem ipsum, cursus sed est id, pretium rhoncus justo. Sed ultricies congue vestibulum. Nunc dui.</p>
-                            </section>
+                                            <h4>Functions</h4>
+                                            <ul>
+                                                <li><a href="#startCalibration"><code>startCalibration()</code></a></li>
+                                                <li><a href="#drawCalibration">drawCalibration()</a></li>
+                                                <li><a href="#calibrateAllPoints">calibrationAllPoints()</a></li>
+                                                <li><a href="#storePupilCoordinates">storePupilCoordinates()</a></li>
+                                            </ul>
+                                        </div> <!-- api_links -->
+                                    </div><!-- api_overview -->
+
+                                    <hr> <!-- Copy BELOW THIS LINE FOR EACH NEW FUNCTION OR METHOD-->
+                                    <div class="api_methods">
+                                        <h3 id="startCalibration"><code>startCalibration()</code></h3><br>
+                                        <h4>Description</h4>
+                                            <p>The calibration function is executed in the main.js file after we draw the canvases (that take the eyes and pupil data of the user). It mainly creates a modal dialog box that asks the user to start the 9-point calibration process. As the user clicks on each of the 9 points, the pupil data is collected and sent to <code>mapping.js</code> so we can map and draw the coordinates to the screen. Additionally, we call the <code>drawCalibration()</code> function which draws the points and does the checks for each of the nine points clicked.</p>
+                                        <h4>Parameters</h4>
+                                            <p><code>None</code></p>
+                                        <h4>Return</h4>
+                                            <p><code>None</code></p>
+                                        <h4>startCalbration() Code Snippet</h4>
+                                            <script src="https://gist.github.com/Ricky-Kynd/92414492f70a46589ff095f5ce43c430.js"></script>
+                                    </div><!-- api_methods -->
+                            
+                                    <div class="api_methods">
+                                        <h3 id="drawCalibration"><code>drawCalibration()</code></h3><br>
+                                        <h4>Description</h4>
+                                            <p>The draw calibration function is used to draw 9 points on the screen. The user will have to click a point 5 times in order to collect their gaze data which is stored in the <code>userGazePoints</code> object.</p>
+                                        <h4>Parameters</h4>
+                                            <p><code>None</code></p>
+                                        <h4>Return</h4>
+                                            <p><code>None</code></p>
+                                        <h4>drawCalbration() Code Snippet</h4>
+                                            <script src="https://gist.github.com/Ricky-Kynd/3736f9300a47e5118e409ceec788e84a.js"></script>
+                                    </div><!-- api_methods -->
+
+                                    <div class="api_methods">
+                                        <h3 id="calibrateAllPoints"><code>calibrateAllPoints()</code></h3><br>
+                                        <h4>Description</h4>
+                                            <p>This function gets the pupil coordinates and checks if they are valid to store (not NaN). For each point, there is a
+                                        counter to check how many points have been clicked as well as an updated count for each click.</p>
+                                        <h4>Parameters</h4>
+                                            <p><code>{event} HTML Attribute</code></p>
+                                        <h4>Return</h4>
+                                            <p><code>None</code></p>
+                                        <h4>calibrateAllPoints() Code Snippet</h4>
+                                            <script src="https://gist.github.com/Ricky-Kynd/3736f9300a47e5118e409ceec788e84a.js"></script>
+                                    </div><!-- api_methods -->
+
+                                    <div class="api_methods">
+                                        <h3 id="storePupilCoordinates"><code>storePupilCoordinates()</code></h3><br>
+                                        <h4>Description</h4>
+                                            <p>TThis function starts the calibration process after the main canvas feed loads. Stores users gaze coordinate when
+                                        calibrating in userGazePoints object.</p>
+                                        <h4>Parameters</h4>
+                                            <p><code>{PointID} Gets the id of single point</code></p>
+                                            <p><code>{pupilX} Get users pupil X coordinate</code></p>
+                                            <p><code>{pupilY} Gets tusers pupil Y point</code></p>
+                                        <h4>Return</h4>
+                                            <p><code>None</code></p>
+                                        <h4>storePupilCoordinates() Code Snippet</h4>
+                                            <script src="https://gist.github.com/Ricky-Kynd/204b0bc20331bea652dc16dacba542a6.js"></script>
+                                    </div><!-- api_methods -->
+
+                            </section> <!-- END calibration section-->
+
                             <section id="heading3">
                                 <h1>Heading3</h1>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies ac odio aliquet lobortis. Sed sagittis efficitur turpis, vel rhoncus sapien aliquet eu. Proin vel justo sem. Curabitur egestas diam quis quam consequat, at efficitur magna luctus. Integer ultricies consectetur eros eget tempor. Sed porttitor efficitur quam, eu iaculis arcu lacinia eleifend. Mauris tristique, lorem at lobortis suscipit, magna neque porta diam, vitae eleifend dui libero vitae nisl. Nullam vitae varius lectus.
