@@ -3,7 +3,6 @@
   position: absolute;
   width: 250px;
   height: 120%;
-  overflow-y: hidden;
   background: #2C3E50;
   opacity: 0.9;
 }
@@ -44,4 +43,20 @@
 
 .sidebar-nav li a:hover{
   background: #16A085;
+}
+
+
+/* Api documenation styles */
+.api_overview {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+
+.api_methods {
+  background-color: #fafafa;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 20px;
 }
