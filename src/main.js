@@ -1,5 +1,5 @@
 import { drawCroppedCanvas } from './modules/eyeDetection.js'
-import { clearCanvas, grayscaleCanvas, croppedCanvasLeft, video, mappingCanvas} from './modules/elements.js'
+import { clearCanvas, grayscaleCanvas, croppedCanvasLeft, video, sliderIT, sliderITtext, mappingCanvas } from './modules/elements.js'
 import { applyImageProcessing } from './modules/imageProcessing.js'
 import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './modules/pupilDetection.js'
 import { startCalibration, userGazePoints } from './modules/calibration.js'
@@ -64,8 +64,8 @@ video.addEventListener('play', () => {
 
             // Pupil Detection
             // Get intensity threshold from slider 
-            const intensityThreshold = document.getElementById("myRange").value / 1000
-            document.getElementById("intensityThreshold").innerHTML = intensityThreshold
+            const intensityThreshold = sliderIT.value / 1000
+            sliderITtext.innerHTML = "Intensity threshold: " + intensityThreshold
 
             evaluateIntensity(croppedCanvasLeft, intensityThreshold)
             applyMinimumFilter(croppedCanvasLeft)

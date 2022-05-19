@@ -129,6 +129,8 @@ const calibrateAllPoints = (event) => {
         for (let i = 0; i < points.length; i ++) {
             points[i].style.visibility = 'hidden';
         }
+
+        alert("Calibration complete")
     }
 
     /** FEATURE: Calculating Accuracy (Analyze prediction points)
