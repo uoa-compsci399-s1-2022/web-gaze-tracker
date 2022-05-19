@@ -3,16 +3,14 @@
  * 
  * @param {any} detections detections object from faceapi
  * @param {HTMLElement} leftCanvas canvas for left eye
- * @param {HTMLElement} rightCanvas canvas for right eye
+ * 
  */
-const drawCroppedCanvases = (detections, leftCanvas, rightCanvas) => {
+const drawCroppedCanvas = (detections, leftCanvas) => {
   // get left and right eye
   const leftEye = detections[0].landmarks.getLeftEye()
-  const rightEye = detections[0].landmarks.getRightEye()
   const padding = 5
 
   const [leftStartX, leftStartY, leftDisX, leftDisY] = calculateStartAndDistance(leftEye, padding)
-  const [rightStartX, rightStartY, rightDisX, rightDisY] = calculateStartAndDistance(rightEye, padding)
 
   // draw cropped video onto left canvas
   leftCanvas.getContext('2d').drawImage(
@@ -21,14 +19,6 @@ const drawCroppedCanvases = (detections, leftCanvas, rightCanvas) => {
     leftDisX, leftDisY,                                     // area to crop
     0, 0,                                                   // draw from point (0, 0) in the canvas,
     leftCanvas.width, leftCanvas.height
-  )
-
-  rightCanvas.getContext('2d').drawImage(
-    video,
-    rightStartX, rightStartY,                                 // start position
-    rightDisX, rightDisY,                                     // area to crop
-    0, 0,                                                     // draw from point (0, 0) in the canvas,
-    rightCanvas.width, rightCanvas.height
   )
 }
 
@@ -60,4 +50,4 @@ const calculateStartAndDistance = (eye, padding) => {
   return [minX, minY, maxX - minX, maxY - minY]
 }
 
-export { drawCroppedCanvases }
+export { drawCroppedCanvas }

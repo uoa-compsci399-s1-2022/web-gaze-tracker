@@ -2,17 +2,19 @@ import { userGazePoints } from './calibration.js'
 
 /** Draws user's gaze as a circle on the browser
  * 
- * @param {Document} document canvas to draw on
+ * @param {HTMLElement} canvas canvas to draw on
  * @param {number}  pupilX x position of pupil
  * @param {number}  pupilY y position of pupil
  * 
  * @return {number} cursor postion
  */
-const drawCursor = (document, pupilX, pupilY) => {
+const drawCursor = (canvas, pupilX, pupilY) => {
+
+    // Calculating average points for the pupil and calibration points position after calibration 
     const allGazePoints = getAveragePoints("pupilPos")
     const allScreenPoints = getAveragePoints("calibrationPointsPos")
 
-    // xCoord
+    // Calculating xCoordinate of where you look 
     let xGazeStart = (allGazePoints[0][0] + allGazePoints[3][0] + allGazePoints[6][0]) / 3
     let xGazeEnd = (allGazePoints[2][0] + allGazePoints[5][0] + allGazePoints[8][0]) / 3
     let gazeWidth = xGazeEnd - xGazeStart
@@ -23,7 +25,7 @@ const drawCursor = (document, pupilX, pupilY) => {
 
     let cursorX = (pupilX - xGazeStart) * screenWidth / gazeWidth
 
-    // yCoord
+    // Calculating yCoordinate of where you look 
     let yGazeStart = (allGazePoints[0][1] + allGazePoints[1][1] + allGazePoints[2][1]) / 3
     let yGazeEnd = (allGazePoints[6][1] + allGazePoints[7][1] + allGazePoints[8][1]) / 3
     let gazeHeight = yGazeEnd - yGazeStart
@@ -34,24 +36,18 @@ const drawCursor = (document, pupilX, pupilY) => {
 
     let cursorY = (pupilY - yGazeStart) * screenHeight / gazeHeight
 
-    // create canvas
-    const mappingCanvas = document.createElement("CANVAS")
-    mappingCanvas.id = "mappingCanvas"
-    mappingCanvas.width = screenWidth
-    mappingCanvas.height = screenHeight
-    mappingCanvas.style.position = "absolute"
-    mappingCanvas.style.top = yScreenStart + "px"
-    mappingCanvas.style.left = xScreenStart + "px"
-
-    let ctx = mappingCanvas.getContext('2d');
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(0, 0, mappingCanvas.width, mappingCanvas.height);
-
+    // style canvas
+    canvas.width = screenWidth
+    canvas.height = screenHeight
+    canvas.style.top = yScreenStart + "px"
+    canvas.style.left = xScreenStart + "px"
+    
+    let ctx = canvas.getContext('2d');
     ctx.beginPath()
-    ctx.strokeStyle = 'red'
-    ctx.arc(cursorX, cursorY, 6, 0, 6 * Math.PI)
-    ctx.stroke()
-    document.body.append(mappingCanvas)
+    ctx.fillStyle = 'red'
+    ctx.arc(cursorX, cursorY, 20, 0, 2 * Math.PI)
+    ctx.fill()
+    ctx.closePath()
 
     return [cursorX, cursorY]
 }
