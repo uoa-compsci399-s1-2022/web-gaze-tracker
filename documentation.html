@@ -1,494 +1,472 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Peeper.js</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="assets/css/documentation.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    </head>
-    <body>
-        <div id="wrapper">
-            <div class="container">
-                <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" id="top-nav">
-                    <div class="container-fluid">
-                        
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Peeper.js</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/documentation.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="container">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" id="top-nav">
+                <div class="container-fluid">
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="index.html">Home</a>
                             <a class="nav-link" href="example.html">Example</a>
                             <a class="nav-link" href="documentation.html">Documentation</a>
                             <a class="nav-link" href="index.html#team">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-    
-
-            <div id="sidebar-wrapper">
-                <div id="sidebar-scroll">
-                    <ul class="sidebar-nav">
-                        <br>
-                        <a class="logo" href="index.html">
-                            Peeper.js
-                            <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30">
-                        </a>
-                        <hr style="border-top: 3px solid #bbb; margin: auto; margin-top: 15px; margin-bottom: 15px;">
-                        <h3 style="font-size: 23px; " id="documentation-heading">Documentation<i class="bi bi-journal-code" id="documentationLogo"></i></h3>
-                        
-                        <li><a href="#main">main.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#startVideo"><code>startVideo()</code></a></li>
-                                <li><a href="#setInterval"><code>setInterval()</code></a></li>
-                            </ul>
-
-                        <li><a href="#calibration">Calibration.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#startCalibration"><code>startCalibration()</code></a></li>
-                                <li><a href="#drawCalibration"><code>drawCalibration()</code></a></li>
-                                <li><a href="#calibrateAllPoints"><code>calibrationAllPoints()</code></a></li>
-                                <li><a href="#storePupilCoordinates"><code>storePupilCoordinates()</code></a></li>
-                            </ul>
-
-                        <li><a href="#elements">elements.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
-                            </ul>
-
-                        <li><a href="#eyeDetection">eyeDetection.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a></li>
-                                <li><a href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a></li>
-                            </ul>
-
-                        <li><a href="#imageProcessing">imageProcessing.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a></li>
-                            </ul>
-
-                        <li><a href="#pupilDetection">pupilDetection.js</a></li>
-                            <ul class="subpoints">
-                                <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
-                                <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
-                                <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
-                                <li><a href="#getPupils"><code>getPupils()</code></a></li>
-                                <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
-                                <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a></li>
-                            </ul>
-                    </ul>
-                </div>
-            </div>
-
-            <div id="page-content-wrapper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- use "api" prefix in classnames to style all api function sections -->
-                            <section id="main">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>main.js</h1><br>
-                                        <h4>About</h4>
-                                            <p>This file is where all our modules are getting used in a continues loop to extract the eye data and map it to the screen.</p>
-                                        <div class="api_links">
-                                            <h4>Imported functions</h4>
-                                                <code>drawCroppedCanvases </code>from ./modules/eyeDetection.js<br>
-                                                <code>clearCanvas</code> from ./modules/elements.js<br>
-                                                <code>applyImageProcessing</code> from ./modules/imageProcessing.js<br>
-                                                <code>applyMinimumFilter</code> from ./modules/pupilDetection.js<br>
-                                                <code>drawPupilRegion</code> from ./modules/pupilDetection.js<br>
-                                                <code>evaluateIntensity</code> from ./modules/pupilDetection.js<br>
-                                                <code>getPMIIndex</code> from ./modules/pupilDetection.js<br>
-                                                <code>getPupils</code> from ./modules/pupilDetection.js<br>
-                                                <code>startCalibration</code> from ./modules/calibration.js<br>
-                                                <br>
-                            
-                                            <h4>Functions</h4>
-                                                <ul>
-                                                    <li><a href="#startVideo"><code>startVideo()</code></a></li>
-                                                    <li><a href="#setInterval"><code>setInterval()</code></a></li>
-                                                </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-                            
-                                    <div class="api_methods">
-                                        <h3 id="startVideo"><code>startVideo()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Converts the image from the webcam to the grayscale image and applies it to the specified canvas</p>
-                                        <h4>Parameters</h4>
-                                            <code>None</code>                            
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>startVideo()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="setInterval"><code>setInterval()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>continuously detect face and eye every 30ms</p>
-                                        <h4>Parameters</h4>
-                                            <code>None</code>                                    
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>setInterval()</code> function</p>
-                                    </div><!-- api_methods -->
-                                </div><!-- api_container -->
-                            </section><!------- END main section -------->
-
-                            <section id="calibration">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>Calibration.js</h1><br>
-                                        <h4>About</h4>
-                                        <p>This file contains the the setup to our calibration system. This is a crucial part of an eye gaze tracker, especially through a webcam, as there are different webcams and their capacity where accuracy is crucial in order to map your eyes to the screen.
-                                        </p>
-
-                                        <div class="api_links">
-                                            
-                                            <h4>Global Variables</h4>
-                                                <code>calibrationPoints</code>
-                                                </code>Type: Object</code>
-                                                    <p>This object is created as each key as the 9 points and stores value as click counts for each of point as <code>type: number</code> This is used to keep track of each point and to check if user has finished calibration, while also storing a users gaze and disabling each point on completion (point turns yellow).<p>
-                                            
-                                                <code>userGazePoints</code>
-                                                </code>Type: Object</code>
-                                                    <p>Stores coordinates when user clicks on each of the nine points. These points are then passed into our mapping functionality in mapping.js to calculate the average of the 5 gaze points for each point.</p>
-
-                                            <h4>Functions</h4>
-                                            <ul>
-                                                <li><a href="#startCalibration"><code>startCalibration()</code></a></li>
-                                                <li><a href="#drawCalibration"><code>drawCalibration()</code></a></li>
-                                                <li><a href="#calibrateAllPoints"><code>calibrationAllPoints()</code></a></li>
-                                                <li><a href="#storePupilCoordinates"><code>storePupilCoordinates()</code></a></li>
-                                            </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-
-                                    <hr> <!-- Copy BELOW THIS LINE FOR EACH NEW FUNCTION OR METHOD-->
-                                    <div class="api_methods">
-                                        <h3 id="startCalibration"><code>startCalibration()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>The calibration function is executed in the main.js file after we draw the canvases (that take the eyes and pupil data of the user). It mainly creates a modal dialog box that asks the user to start the 9-point calibration process. As the user clicks on each of the 9 points, the pupil data is collected and sent to <code>mapping.js</code> so we can map and draw the coordinates to the screen. Additionally, we call the <code>drawCalibration()</code> function which draws the points and does the checks for each of the nine points clicked.</p>
-                                        <h4>Parameters</h4>
-                                            <p><code>None</code></p>
-                                        <h4>Return</h4>
-                                            <p><code>None</code></p>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>startCalibration()</code> function</p>
-                                        
-                                    </div><!-- api_methods -->
-                            
-                                    <div class="api_methods">
-                                        <h3 id="drawCalibration"><code>drawCalibration()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>The draw calibration function is used to draw 9 points on the screen. The user will have to click a point 5 times in order to collect their gaze data which is stored in the <code>userGazePoints</code> object.</p>
-                                        <h4>Parameters</h4>
-                                            <p><code>None</code></p>
-                                        <h4>Return</h4>
-                                            <p><code>None</code></p>
-
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>drawCalibration()</code> function</p>
-                                        
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="calibrateAllPoints"><code>calibrateAllPoints()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>This function gets the pupil coordinates and checks if they are valid to store (not NaN). For each point, there is a
-                                        counter to check how many points have been clicked as well as an updated count for each click.</p>
-                                        <h4>Parameters</h4>
-                                            <p><code>{event} HTML Attribute</code></p>
-                                        <h4>Return</h4>
-                                            <p><code>None</code></p>
-
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>calibrateAllPoints()</code> function</p>
-                                        
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="storePupilCoordinates"><code>storePupilCoordinates(PointID, pupilX, pupilY)</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>This function starts the calibration process after the main canvas feed loads. Stores users gaze coordinate when
-                                        calibrating in userGazePoints object.</p>
-                                        <h4>Parameters</h4>
-                                            <p><code>{PointID} Gets the id of single point</code></p>
-                                            <p><code>{pupilX} Get users pupil X coordinate</code></p>
-                                            <p><code>{pupilY} Gets tusers pupil Y point</code></p>
-                                        <h4>Return</h4>
-                                            <p><code>None</code></p>
-
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>storePupilCoordinates()</code> function</p>
-                                        
-                                    </div><!-- api_methods -->
-                                </div><!-- api_container -->
-                            </section><!------- END calibration section -------->
-
-                            <section id="elements">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>elements.js</h1><br>
-                                        <h4>About</h4>
-                                        <p>This file contains all exportable html elements that is printed on the screen and passed to other functions.
-                                        </p>
-                                
-                                        <div class="api_links">
-                                
-                                            <h4>Global Variables</h4>
-
-                                                <li><code>video</code> Type: HTML element<p>Main video that catches users face and display it on the screen.<p></li>
-                                                <li><code>croppedCanvasLeft</code> HTML element<p>cropped out eye image (black and white)</p></li>
-                                                <li><code>croppedCanvasRight</code> HTML element<p>cropped out eye image (colored)</p></li>
-                                                <li><code>croppedCanvas2</code> HTML element<p>cropped out eye image (grayscale)</p></li>
-
-                                            <h4>Functions</h4>
-                                            <ul>
-                                                <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
-                                            </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-
-
-                                    <div class="api_methods">
-                                        <h3 id="clearCanvas"><code>clearCanvas(canvas)</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>clears the HTML canvas</p>
-                                        <h4>Parameters</h4>
-                                            <p><code>{canvas} HTML elementt</code></p>
-                                        <h4>Return</h4>
-                                            <p><code>None</code></p>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>clearCanvas()</code> function</p>
-                                    </div><!-- api_methods -->
-
-
-                                </div><!-- api_container -->
-                            </section><!------- END elements section -------->
-
-                            <section id="eyeDetection">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>eyeDetection.js</h1><br>
-                                        <h4>About</h4>
-                                        <p>This file contains all exportable html elements that is printed on the screen and passed to other
-                                            functions.
-                                        </p>
-                                        <div class="api_links">
-                                            <h4>Global Variables</h4>
-                                            <ul>
-                                                <li><code>video</code> Type: HTML element<p>Main video that catches users face and display it on the screen.<p></li>
-                                                <li><code>croppedCanvasLeft</code> HTML element<p>cropped out eye image (black and white)</p></li>
-                                                <li><code>croppedCanvasRight</code> HTML element<p>cropped out eye image (colored)</p></li>
-                                                <li><code>croppedCanvas2</code> HTML element<p>cropped out eye image (grayscale)</p></li>
-                                            </ul>
-                            
-                                            <h4>Functions</h4>
-                                            <ul>
-                                                <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a></li>
-                                                <li><a href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a></li>
-                                            </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-
-                            
-                                    <div class="api_methods">
-                                        <h3 id="drawCroppedCanvases"><code>drawCroppedCanvases()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Draws a cropped canvas for each of the eyes</p>
-                                        <h4>Parameters</h4>
-                                            <code>Object {detections}</code><p>detections from faceapi</p>
-                                            <code>{leftcanvas}</code><p>canvas for the left eye</p>
-                                            <code>{rightcanvas}</code><p>canvas for the right eye</p>
-                                        <h4>Return</h4>
-                                            <p>
-                                            <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
-                                            <code> Array: [x,y]</code> Array of x, y distance to the right eye</code></p>
-                                        <h4>Usage</h4>
-                                        <p>Here's how to use the <code>drawCroppedCanvases()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="calculateStartAndDistance"><code>calculateStartAndDistance()</code></h3><br>
-                                        <h4>Description</h4>
-                                        <p>Find the x and y coordinates from the left eye to the right eye</p>
-                                        <h4>Parameters</h4>
-                                        <p><code>{eye} dictionary of x and y variables of the eye</code></p>
-                                        <p><code>{padding} amount of padding added to image
-                                    </code></p>
-                                        <h4>Return</h4>
-                                        <p>
-                                            <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
-                                            <code> Array: [x,y]</code> Array of x, y distance to the right eye
-                                            </code>
-                                        </p>
-                                        <h4>Usage</h4>
-                                        <p>Here's how to use the <code>calculateStartAndDistance()</code> function</p>
-                                    </div><!-- api_methods -->
-                            
-                            
-                                </div><!-- api_container -->
-                            </section><!------- END eyeDetection section -------->
-
-                            <section id="imageProcessing">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>imageProcessing.js</h1><br>
-                                        <h4>About</h4>
-                                        <p>This file contains openCV methods that apply filters on our canvas to make it easier to extract pupil datta
-                                        </p>
-                                        <div class="api_links">
-                                            <h4>Global Variables</h4>
-                                                <code>None</code>
-                            
-                                            <h4>Functions</h4>
-                                                <ul>
-                                                    <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a></li>
-                                                </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-                            
-                                    <div class="api_methods">
-                                        <h3 id="applyImageProcessing"><code>applyImageProcessing()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Converts the image from the webcam to the grayscale image and applies it to the specified canvas</p>
-                                        <h4>Parameters</h4>
-                                            <code>{Canvas} HTML element</code>
-                                            <p>the canvas to which apply grayscale image</p>
-                                        
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>applyImageProcessing()</code> function</p>
-                                    </div><!-- api_methods -->
-                                </div><!-- api_container -->
-                            </section><!------- END imageProcessing section -------->
-
-                            <section id="pupilDetection">
-                                <div class="api_container">
-                                    <div class="api_overview">
-                                        <h1>pupilDetection.js</h1><br>
-                                        <h4>About</h4>
-                                            <p>This file contains openCV methods that apply filters on our canvas to make it easier to extract pupil data</p>
-                                        <div class="api_links">
-                                            <h4>Global Variables</h4>
-                                                <code>originalGrayScaleData</code>
-                                                <code>pmiX</code>
-                                                <code>pmiY</code>
-                            
-                                            <h4>Functions</h4>
-                                                <ul>
-                                                    <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
-                                                    <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
-                                                    <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
-                                                    <li><a href="#getPupils"><code>getPupils()</code></a></li>
-                                                    <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
-                                                    <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a></li>
-                                                </ul>
-                                        </div> <!-- api_links -->
-                                    </div><!-- api_overview -->
-                            
-                                    <div class="api_methods">
-                                        <h3 id="evaluateIntensity"><code>evaluateIntensity()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                            
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>evaluateIntensity()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="applyMinimumFilter"><code>applyMinimumFilter()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                                    
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>applyMinimumFilter()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="getPMIIndex"><code>getPMIIndex()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                                    
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>getPMIIndex()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="getPupils"><code>getPupils()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                                    
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>getPupils()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="drawPupilRegion"><code>drawPupilRegion()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                                    
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>drawPupilRegion()</code> function</p>
-                                    </div><!-- api_methods -->
-
-                                    <div class="api_methods">
-                                        <h3 id="getAverageIntensity"><code>getAverageIntensity()</code></h3><br>
-                                        <h4>Description</h4>
-                                            <p>Add description please</p>
-                                        <h4>Parameters</h4>
-                                            <code>{?} Add parameter name and type</code>
-                                            <p>Add description of parameter here</p>
-                                        <h4>Return</h4>
-                                            <code>None</code>
-                                        <h4>Usage</h4>
-                                            <p>Here's how to use the <code>getAverageIntensity()</code> function</p>
-                                    </div><!-- api_methods -->
-                                </div><!-- api_container -->
-                            </section><!------- END pupilDetection section -------->
-
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </nav>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    </body>
+
+
+        <div id="sidebar-wrapper">
+            <div id="sidebar-scroll">
+                <ul class="sidebar-nav">
+                    <br>
+                    <a class="logo" href="index.html">
+                        Peeper.js
+                        <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30">
+                    </a>
+                    <hr style="border-top: 3px solid #bbb; margin: auto; margin-top: 15px; margin-bottom: 15px;">
+                    <h3 style="font-size: 23px; " id="documentation-heading">Documentation<i class="bi bi-journal-code"
+                            id="documentationLogo"></i></h3>
+
+
+                    <li><a href="#calibration">Calibration</a></li>
+                    <ul class="subpoints">
+                        <li><a href="#startCalibration"><code>startCalibration()</code></a></li>
+                        <li><a href="#drawCalibration"><code>drawCalibration()</code></a></li>
+                        <li><a href="#calibrateAllPoints"><code>calibrationAllPoints()</code></a></li>
+                        <li><a href="#storePupilCoordinates"><code>storePupilCoordinates()</code></a></li>
+                    </ul>
+
+                    <li><a href="#elements">Elements</a></li>
+                    <ul class="subpoints">
+                        <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
+                    </ul>
+
+                    <li><a href="#eyeDetection">Eye Detection</a></li>
+                    <ul class="subpoints">
+                        <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a></li>
+                        <li><a href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a></li>
+                    </ul>
+
+                    <li><a href="#imageProcessing">Image Processing</a></li>
+                    <ul class="subpoints">
+                        <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a></li>
+                    </ul>
+
+                    <li><a href="#pupilDetection">Pupil Detection</a></li>
+                    <ul class="subpoints">
+                        <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
+                        <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
+                        <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
+                        <li><a href="#getPupils"><code>getPupils()</code></a></li>
+                        <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
+                        <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a></li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section id="calibration">
+                            <div class="api_container">
+                                <div class="api_overview">
+                                    <h1>Calibration</h1><br>
+                                    <h4>About</h4>
+                                    <p>The setup of our calibration system. This is a crucial
+                                        part of the gaze tracker, especially through a webcam, as there are different
+                                        webcams and their capacity where accuracy is crucial in order to map your eyes
+                                        to the screen.
+                                    </p>
+
+                                    <div class="api_links">
+                                        <h4>Global Variables</h4>
+
+                                        <code>calibrationPoints</code>
+                                        </code>Object</code>
+                                        <p>Stores the number of clicks for each calibration point</p>
+
+                                        <code>totalPointsCalibrated</code>
+                                        </code>number</code>
+                                        <p>Number of points calibrated (points clicked 5 times)</p>
+
+                                        <code>userGazePoints</code>
+                                        </code>Object</code>
+                                        <p>Stores mouse and pupil coordinates when user clicks on each of the nine
+                                            points</p>
+
+                                        <h4>Functions</h4>
+                                        <ul>
+                                            <li><a href="#startCalibration"><code>startCalibration()</code></a></li>
+                                            <li><a href="#drawCalibration"><code>drawCalibration()</code></a></li>
+                                            <li><a href="#calibrateAllPoints"><code>calibrationAllPoints()</code></a>
+                                            </li>
+                                            <li><a
+                                                    href="#storePupilCoordinates"><code>storePupilCoordinates()</code></a>
+                                            </li>
+                                        </ul>
+                                    </div> <!-- api_links -->
+                                </div><!-- api_overview -->
+
+                                <hr> <!-- Copy BELOW THIS LINE FOR EACH NEW FUNCTION OR METHOD-->
+                                <div class="api_methods">
+                                    <h3 id="startCalibration"><code>startCalibration()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>The calibration function is executed in the main.js file after we draw the
+                                        canvases (that take the eyes and pupil data of the user). It mainly creates a
+                                        modal dialog box that asks the user to start the 9-point calibration process. As
+                                        the user clicks on each of the 9 points, the pupil data is collected and sent to
+                                        <code>mapping.js</code> so we can map and draw the coordinates to the screen.
+                                        Additionally, we call the <code>drawCalibration()</code> function which draws
+                                        the points and does the checks for each of the nine points clicked.
+                                    </p>
+                                    <h4>Parameters</h4>
+                                    <p><code>None</code></p>
+                                    <h4>Return</h4>
+                                    <p><code>None</code></p>
+
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="drawCalibration"><code>drawCalibration()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>The draw calibration function is used to draw 9 points on the screen. The user
+                                        will have to click a point 5 times in order to collect their gaze data which is
+                                        stored in the <code>userGazePoints</code> object.</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>None</code></p>
+                                    <h4>Return</h4>
+                                    <p><code>None</code></p>
+
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="calibrateAllPoints"><code>calibrateAllPoints()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>This function gets the pupil coordinates and checks if they are valid to store
+                                        (not NaN). For each point, there is a
+                                        counter to check how many points have been clicked as well as an updated count
+                                        for each click.</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>{event} HTML Attribute</code></p>
+                                    <h4>Return</h4>
+                                    <p><code>None</code></p>
+
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="storePupilCoordinates">
+                                        <code>storePupilCoordinates(PointID, pupilX, pupilY)</code>
+                                    </h3><br>
+                                    <h4>Description</h4>
+                                    <p>This function starts the calibration process after the main canvas feed loads.
+                                        Stores users gaze coordinate when
+                                        calibrating in userGazePoints object.</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>{PointID} Gets the id of single point</code></p>
+                                    <p><code>{pupilX} Get users pupil X coordinate</code></p>
+                                    <p><code>{pupilY} Gets tusers pupil Y point</code></p>
+                                    <h4>Return</h4>
+                                    <p><code>None</code></p>
+
+                                </div><!-- api_methods -->
+                            </div><!-- api_container -->
+                        </section>
+                        <!------- END calibration section -------->
+
+                        <section id="elements">
+                            <div class="api_container">
+                                <div class="api_overview">
+                                    <h1>Elements</h1><br>
+                                    <h4>About</h4>
+                                    <p>This file contains all exportable html elements that is printed on the screen and
+                                        passed to other functions.
+                                    </p>
+
+                                    <div class="api_links">
+                                        <h4>Global Variables</h4>
+
+                                        <code>video</code>
+                                        </code>HTML element</code>
+                                        <p>Main video that catches users face and display it on the screen.
+                                        </p>
+
+                                        <code>croppedCanvasLeft</code>
+                                        </code>HTML element</code>
+                                        <p>cropped out eye image (black and white)</p>
+
+                                        <code>grayscaleCanvas</code>
+                                        </code>HTML element</code>
+                                        <p>cropped out eye image (grayscale)</p>
+
+                                        <h4>Functions</h4>
+                                        <ul>
+                                            <li><a href="#clearCanvas"><code>clearCanvas()</code></a></li>
+                                        </ul>
+                                    </div> <!-- api_links -->
+                                </div><!-- api_overview -->
+
+
+                                <div class="api_methods">
+                                    <h3 id="clearCanvas"><code>clearCanvas(canvas)</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>clears the HTML canvas</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>{canvas} HTML element</code></p>
+                                    <h4>Return</h4>
+                                    <p><code>None</code></p>
+                                </div><!-- api_methods -->
+
+
+                            </div><!-- api_container -->
+                        </section>
+                        <!------- END elements section -------->
+
+                        <section id="eyeDetection">
+                            <div class="api_container">
+                                <div class="api_overview">
+                                    <h1>Eye Detection</h1><br>
+                                    <h4>About</h4>
+                                    <p>This file contains all exportable html elements that is printed on the screen and
+                                        passed to other
+                                        functions.
+                                    </p>
+                                    <div class="api_links">
+                                        <h4>Global Variables</h4>
+                                        <code>none</code>
+                                        <br>
+                                        <br>
+
+                                        <h4>Functions</h4>
+                                        <ul>
+                                            <li><a href="#drawCroppedCanvases"><code>drawCroppedCanvases()</code></a>
+                                            </li>
+                                            <li><a
+                                                    href="#calculateStartAndDistance"><code>calculateStartAndDistance()</code></a>
+                                            </li>
+                                        </ul>
+                                    </div> <!-- api_links -->
+                                </div><!-- api_overview -->
+
+
+                                <div class="api_methods">
+                                    <h3 id="drawCroppedCanvases"><code>drawCroppedCanvases()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Draws a cropped canvas for each of the eyes</p>
+                                    <h4>Parameters</h4>
+                                    <code>Object {detections}</code>
+                                    <p>detections from faceapi</p>
+                                    <code>{leftcanvas}</code>
+                                    <p>canvas for the left eye</p>
+                                    <code>{rightcanvas}</code>
+                                    <p>canvas for the right eye</p>
+                                    <h4>Return</h4>
+                                    <p>
+                                        <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
+                                        <code> Array: [x,y]</code> Array of x, y distance to the right eye</code>
+                                    </p>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="calculateStartAndDistance"><code>calculateStartAndDistance()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Find the x and y coordinates from the left eye to the right eye</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>{eye} dictionary of x and y variables of the eye</code></p>
+                                    <p><code>{padding} amount of padding added to image
+                                    </code></p>
+                                    <h4>Return</h4>
+                                    <p>
+                                        <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
+                                        <code> Array: [x,y]</code> Array of x, y distance to the right eye
+                                        </code>
+                                    </p>
+                                </div><!-- api_methods -->
+
+
+                            </div><!-- api_container -->
+                        </section>
+                        <!------- END eyeDetection section -------->
+
+                        <section id="imageProcessing">
+                            <div class="api_container">
+                                <div class="api_overview">
+                                    <h1>Image Processing</h1><br>
+                                    <h4>About</h4>
+                                    <p>This file contains openCV methods that apply filters on our canvas to make it
+                                        easier to extract pupil datta
+                                    </p>
+                                    <div class="api_links">
+                                        <h4>Global Variables</h4>
+                                        <code>None</code>
+                                        <br>
+                                        <br>
+
+                                        <h4>Functions</h4>
+                                        <ul>
+                                            <li><a href="#applyImageProcessing"><code>applyImageProcessing()</code></a>
+                                            </li>
+                                        </ul>
+                                    </div> <!-- api_links -->
+                                </div><!-- api_overview -->
+
+                                <div class="api_methods">
+                                    <h3 id="applyImageProcessing"><code>applyImageProcessing()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Converts the image from the webcam to the grayscale image and applies it to the
+                                        specified canvas</p>
+                                    <h4>Parameters</h4>
+                                    <code>{Canvas} HTML element</code>
+                                    <p>the canvas to which apply grayscale image</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+                            </div><!-- api_container -->
+                        </section>
+                        <!------- END imageProcessing section -------->
+
+                        <section id="pupilDetection">
+                            <div class="api_container">
+                                <div class="api_overview">
+                                    <h1>Pupil Detection</h1><br>
+                                    <h4>About</h4>
+                                    <p>This file contains openCV methods that apply filters on our canvas to make it
+                                        easier to extract pupil data</p>
+                                    <div class="api_links">
+                                        <h4>Global Variables</h4>
+
+                                        <code>originalGrayScaleData</code>
+                                        </code>Type: </code>
+                                        <p>description</p>
+
+                                        <code>pmiX</code>
+                                        </code>Type: </code>
+                                        <p>description</p>
+
+                                        <code>pmiY</code>
+                                        </code>Type: </code>
+                                        <p>description</p>
+
+                                        <h4>Functions</h4>
+                                        <ul>
+                                            <li><a href="#evaluateIntensity"><code>evaluateIntensity()</code></a></li>
+                                            <li><a href="#applyMinimumFilter"><code>applyMinimumFilter()</code></a></li>
+                                            <li><a href="#getPMIIndex"><code>getPMIIndex()</code></a></li>
+                                            <li><a href="#getPupils"><code>getPupils()</code></a></li>
+                                            <li><a href="#drawPupilRegion"><code>drawPupilRegion()</code></a></li>
+                                            <li><a href="#getAverageIntensity"><code>getAverageIntensity()</code></a>
+                                            </li>
+                                        </ul>
+                                    </div> <!-- api_links -->
+                                </div><!-- api_overview -->
+
+                                <div class="api_methods">
+                                    <h3 id="evaluateIntensity"><code>evaluateIntensity()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="applyMinimumFilter"><code>applyMinimumFilter()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="getPMIIndex"><code>getPMIIndex()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="getPupils"><code>getPupils()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="drawPupilRegion"><code>drawPupilRegion()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="getAverageIntensity"><code>getAverageIntensity()</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Add description please</p>
+                                    <h4>Parameters</h4>
+                                    <code>{?} Add parameter name and type</code>
+                                    <p>Add description of parameter here</p>
+                                    <h4>Return</h4>
+                                    <code>None</code>
+                                </div><!-- api_methods -->
+                            </div><!-- api_container -->
+                        </section>
+                        <!------- END pupilDetection section -------->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
