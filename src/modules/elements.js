@@ -34,7 +34,7 @@ sliderIT.id = "myRange"
 sliderIT.className = "slider"
 sliderIT.type = "range"
 sliderIT.min = 10
-sliderIT.max = 30
+sliderIT.max = 50
 sliderIT.value = 10
 
 const sliderITtext = document.createElement("p")

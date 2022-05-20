@@ -3,7 +3,10 @@ import { clearCanvas, grayscaleCanvas, croppedCanvasLeft, video, sliderIT, slide
 import { applyImageProcessing } from './modules/imageProcessing.js'
 import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './modules/pupilDetection.js'
 import { startCalibration, userGazePoints } from './modules/calibration.js'
-import { drawCursor } from './modules/mapping.js'
+import { getPositions, drawMapping } from './modules/mapping.js'
+
+// constant
+var globalList = []
 
 // Load video element and append to body
 video.load()
@@ -53,7 +56,6 @@ video.addEventListener('play', () => {
         if (detections.length === 1) {
             // add canvases to document
             document.body.append(croppedCanvasLeft)
-            // document.body.append(croppedCanvasRight)
             document.body.append(grayscaleCanvas)
             document.body.append(mappingCanvas)
 
@@ -71,12 +73,33 @@ video.addEventListener('play', () => {
             applyMinimumFilter(croppedCanvasLeft)
             const pmiIndex = getPMIIndex(croppedCanvasLeft)
             if (pmiIndex !== -1) {
+
+                //Draw the dot in the position of the pupil on the greyscale canvas
                 const [pupilX, pupilY] = getPupils(croppedCanvasLeft, pmiIndex)
                 drawPupilRegion(grayscaleCanvas, pupilX, pupilY)
 
-                // mapping 
+                // mapping to the screen
                 if (userGazePoints.calibrationComplete) {
-                    const [cursorX, cursorY] = drawCursor(mappingCanvas, pupilX, pupilY)
+                    const [cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart] = getPositions(mappingCanvas, pupilX, pupilY)
+                    globalList.push([cursorX, cursorY])
+                    let numberOfSavedElements = 3
+                    if (globalList.length === numberOfSavedElements){
+                        let avgX = 0
+                        let avgY = 0
+                        for(let i=0; i<globalList.length; i++){
+                            avgX+=globalList[i][0]
+                            avgY+=globalList[i][1]
+                        }
+                        console.log(globalList)
+                        globalList = []
+
+                        avgX = parseInt(avgX / numberOfSavedElements)
+                        avgY = parseInt(avgY / numberOfSavedElements)
+
+                        // style canvas
+                        drawMapping(mappingCanvas, avgX, avgY, screenWidth, screenHeight, yScreenStart, xScreenStart)
+                    }
+
                 }
             }
         } else {

@@ -8,7 +8,7 @@ import { userGazePoints } from './calibration.js'
  * 
  * @return {number} cursor postion
  */
-const drawCursor = (canvas, pupilX, pupilY) => {
+const getPositions = (canvas, pupilX, pupilY) => {
 
     // Calculating average points for the pupil and calibration points position after calibration 
     const allGazePoints = getAveragePoints("pupilPos")
@@ -36,6 +36,10 @@ const drawCursor = (canvas, pupilX, pupilY) => {
 
     let cursorY = (pupilY - yGazeStart) * screenHeight / gazeHeight
 
+    return [cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart]
+}
+
+const drawMapping = (canvas, pupilX, pupilY, screenWidth, screenHeight, yScreenStart, xScreenStart) => {
     // style canvas
     canvas.width = screenWidth
     canvas.height = screenHeight
@@ -45,11 +49,9 @@ const drawCursor = (canvas, pupilX, pupilY) => {
     let ctx = canvas.getContext('2d');
     ctx.beginPath()
     ctx.fillStyle = 'red'
-    ctx.arc(cursorX, cursorY, 20, 0, 2 * Math.PI)
+    ctx.arc(pupilX, pupilY, 20, 0, 2 * Math.PI)
     ctx.fill()
     ctx.closePath()
-
-    return [cursorX, cursorY]
 }
 
 /** Extracts average points from userGazePoints
@@ -75,4 +77,4 @@ const getAveragePoints = (key) => {
     return result
 }
 
-export { drawCursor }
+export { getPositions, drawMapping }
