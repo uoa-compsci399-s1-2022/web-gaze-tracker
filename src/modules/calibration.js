@@ -55,7 +55,7 @@ const drawCalibrationPoints = () => {
     calibrationDiv.style = "position: absolute; top: 70%;"
     calibrationDiv.innerHTML = "<span id='pupil_detection_prompt' style='display: none;'>Eyes not detected, please stare at point while clicking</span>"
 
-    //draw each point on to the screen made with input buttons
+    // draw each point on to the screen made with input buttons
     for (let i = 1; i < 10; i++) {
             const point = document.createElement("input")
             point.type = "button"
