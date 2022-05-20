@@ -132,3 +132,10 @@ h1 {
 #documentationLogo {
   margin-left: -10px;
 }
+
+:target::before {
+  content: "";
+  display: block;
+  height: 60px;
+  margin: -60px 0 0;
+}
