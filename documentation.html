@@ -96,24 +96,22 @@
                                 <div class="api_overview">
                                     <h1>Calibration</h1><br>
                                     <h4>About</h4>
-                                    <p>The setup of our calibration system. This is a crucial
-                                        part of the gaze tracker, especially through a webcam, as there are different
-                                        webcams and their capacity where accuracy is crucial in order to map your eyes
-                                        to the screen.
+                                    <p>The setup of our calibration system. This is a crucial part of the gaze tracker
+                                        in order to map your eyes to the screen.
                                     </p>
 
                                     <div class="api_links">
                                         <h4>Global Variables</h4>
 
-                                        <code>calibrationPoints</code>
+                                        <code>calibrationPoints:</code>
                                         </code>Object</code>
                                         <p>Stores the number of clicks for each calibration point</p>
 
-                                        <code>totalPointsCalibrated</code>
+                                        <code>totalPointsCalibrated:</code>
                                         </code>number</code>
                                         <p>Number of points calibrated (points clicked 5 times)</p>
 
-                                        <code>userGazePoints</code>
+                                        <code>userGazePoints:</code>
                                         </code>Object</code>
                                         <p>Stores mouse and pupil coordinates when user clicks on each of the nine
                                             points</p>
@@ -135,13 +133,9 @@
                                 <div class="api_methods">
                                     <h3 id="startCalibration"><code>startCalibration()</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>The calibration function is executed in the main.js file after we draw the
-                                        canvases (that take the eyes and pupil data of the user). It mainly creates a
-                                        modal dialog box that asks the user to start the 9-point calibration process. As
-                                        the user clicks on each of the 9 points, the pupil data is collected and sent to
-                                        <code>mapping.js</code> so we can map and draw the coordinates to the screen.
-                                        Additionally, we call the <code>drawCalibration()</code> function which draws
-                                        the points and does the checks for each of the nine points clicked.
+                                    <p>
+                                        Initialises the 9 calibration points and the start calibration button. When
+                                        clicked, <code>drawCalibrationPoints()</code> is executed.
                                     </p>
                                     <h4>Parameters</h4>
                                     <p><code>None</code></p>
@@ -153,9 +147,9 @@
                                 <div class="api_methods">
                                     <h3 id="drawCalibration"><code>drawCalibration()</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>The draw calibration function is used to draw 9 points on the screen. The user
+                                    <p>Draws the 9 calibration points on the screen. The user
                                         will have to click a point 5 times in order to collect their gaze data which is
-                                        stored in the <code>userGazePoints</code> object.</p>
+                                        stored in <code>userGazePoints</code>.</p>
                                     <h4>Parameters</h4>
                                     <p><code>None</code></p>
                                     <h4>Return</h4>
@@ -164,14 +158,15 @@
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
-                                    <h3 id="calibrateAllPoints"><code>calibrateAllPoints()</code></h3><br>
+                                    <h3 id="calibrateAllPoints"><code>calibrateAllPoints(event)</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>This function gets the pupil coordinates and checks if they are valid to store
-                                        (not NaN). For each point, there is a
-                                        counter to check how many points have been clicked as well as an updated count
-                                        for each click.</p>
+                                    <p>Calibrates all points and gets pupil coordinates and stores them alongside the
+                                        mouse position in
+                                        <code>userGazePoints</code>. By default the pupil coordinates are extracted from
+                                        <code>croppedCanvasLeft</code>.
+                                    </p>
                                     <h4>Parameters</h4>
-                                    <p><code>{event} HTML Attribute</code></p>
+                                    <p><code>event: </code>Event</p>
                                     <h4>Return</h4>
                                     <p><code>None</code></p>
 
@@ -182,13 +177,13 @@
                                         <code>storePupilCoordinates(PointID, pupilX, pupilY)</code>
                                     </h3><br>
                                     <h4>Description</h4>
-                                    <p>This function starts the calibration process after the main canvas feed loads.
-                                        Stores users gaze coordinate when
-                                        calibrating in userGazePoints object.</p>
+                                    <p>Helper function to store an individual pupil's coordinates into
+                                        <code>userGazePoints</code>.
+                                    </p>
                                     <h4>Parameters</h4>
-                                    <p><code>{PointID} Gets the id of single point</code></p>
-                                    <p><code>{pupilX} Get users pupil X coordinate</code></p>
-                                    <p><code>{pupilY} Gets tusers pupil Y point</code></p>
+                                    <p><code>PointID: </code>string</p>
+                                    <p><code>pupilX: </code>number</p>
+                                    <p><code>pupilY: </code>number</p>
                                     <h4>Return</h4>
                                     <p><code>None</code></p>
 
@@ -202,24 +197,24 @@
                                 <div class="api_overview">
                                     <h1>Elements</h1><br>
                                     <h4>About</h4>
-                                    <p>This file contains all exportable html elements that is printed on the screen and
-                                        passed to other functions.
+                                    <p>Initialises various html elements including the video feed, settings menu and
+                                        canvases.
                                     </p>
 
                                     <div class="api_links">
                                         <h4>Global Variables</h4>
 
-                                        <code>video</code>
-                                        </code>HTML element</code>
+                                        <code>video:</code>
+                                        </code>HTMLElement</code>
                                         <p>Main video that catches users face and display it on the screen.
                                         </p>
 
-                                        <code>croppedCanvasLeft</code>
-                                        </code>HTML element</code>
+                                        <code>croppedCanvasLeft:</code>
+                                        </code>HTMLElement</code>
                                         <p>cropped out eye image (black and white)</p>
 
-                                        <code>grayscaleCanvas</code>
-                                        </code>HTML element</code>
+                                        <code>grayscaleCanvas:</code>
+                                        </code>HTMLElement</code>
                                         <p>cropped out eye image (grayscale)</p>
 
                                         <h4>Functions</h4>
@@ -235,7 +230,7 @@
                                     <h4>Description</h4>
                                     <p>clears the HTML canvas</p>
                                     <h4>Parameters</h4>
-                                    <p><code>{canvas} HTML element</code></p>
+                                    <p><code>canvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
                                     <p><code>None</code></p>
                                 </div><!-- api_methods -->
@@ -250,10 +245,7 @@
                                 <div class="api_overview">
                                     <h1>Eye Detection</h1><br>
                                     <h4>About</h4>
-                                    <p>This file contains all exportable html elements that is printed on the screen and
-                                        passed to other
-                                        functions.
-                                    </p>
+                                    <p>Extracts the eyes from face api's landmark detection.</p>
                                     <div class="api_links">
                                         <h4>Global Variables</h4>
                                         <code>none</code>
@@ -273,36 +265,33 @@
 
 
                                 <div class="api_methods">
-                                    <h3 id="drawCroppedCanvases"><code>drawCroppedCanvases()</code></h3><br>
+                                    <h3 id="drawCroppedCanvases">
+                                        <code>drawCroppedCanvases(detections, leftCanvas)</code>
+                                    </h3><br>
                                     <h4>Description</h4>
-                                    <p>Draws a cropped canvas for each of the eyes</p>
+                                    <p>Draws a cropped canvas for the left eye.</p>
                                     <h4>Parameters</h4>
-                                    <code>Object {detections}</code>
-                                    <p>detections from faceapi</p>
-                                    <code>{leftcanvas}</code>
-                                    <p>canvas for the left eye</p>
-                                    <code>{rightcanvas}</code>
-                                    <p>canvas for the right eye</p>
+                                    <p><code>detections: </code>any</p>
+                                    <p><code>leftCanvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
                                     <p>
-                                        <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
-                                        <code> Array: [x,y]</code> Array of x, y distance to the right eye</code>
+                                        <code> number: [x,y]</code> x and y value of the left eye <br>
                                     </p>
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
-                                    <h3 id="calculateStartAndDistance"><code>calculateStartAndDistance()</code></h3><br>
+                                    <h3 id="calculateStartAndDistance">
+                                        <code>calculateStartAndDistance(eye, padding)</code>
+                                    </h3><br>
                                     <h4>Description</h4>
-                                    <p>Find the x and y coordinates from the left eye to the right eye</p>
+                                    <p> Finds the starting and ending x, y coordinates of a bounding box around the
+                                        eyes.*</p>
                                     <h4>Parameters</h4>
-                                    <p><code>{eye} dictionary of x and y variables of the eye</code></p>
-                                    <p><code>{padding} amount of padding added to image
-                                    </code></p>
+                                    <p><code>eye: </code>Object</p>
+                                    <p><code>padding: </code>number</p>
                                     <h4>Return</h4>
                                     <p>
-                                        <code> Array: [x,y]</code> Array of x, y value of the left eye <br>
-                                        <code> Array: [x,y]</code> Array of x, y distance to the right eye
-                                        </code>
+                                        <code> Array: [x,y]</code> Array of x, y value of the left eye
                                     </p>
                                 </div><!-- api_methods -->
 
@@ -334,14 +323,14 @@
                                 </div><!-- api_overview -->
 
                                 <div class="api_methods">
-                                    <h3 id="applyImageProcessing"><code>applyImageProcessing()</code></h3><br>
+                                    <h3 id="applyImageProcessing"><code>applyImageProcessing(canvas, debugCanvas)</code>
+                                    </h3><br>
                                     <h4>Description</h4>
-                                    <p>Converts the image from the webcam to the grayscale image and applies it to the
-                                        specified canvas</p>
+                                    <p>Converts the image from <code>canvas</code> to grayscale and applies it to both
+                                        canvases.</p>
                                     <h4>Parameters</h4>
-                                    <code>{Canvas} HTML element</code>
-                                    <p>the canvas to which apply grayscale image</p>
-
+                                    <p></p><code>canvas: </code>HTMLElement</p>
+                                    <p></p><code>debugCanvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
                                     <code>None</code>
                                 </div><!-- api_methods -->
@@ -354,22 +343,13 @@
                                 <div class="api_overview">
                                     <h1>Pupil Detection</h1><br>
                                     <h4>About</h4>
-                                    <p>This file contains openCV methods that apply filters on our canvas to make it
-                                        easier to extract pupil data</p>
+                                    <p>Extraction of pupils from a cropped greyscaled canvas.</p>
                                     <div class="api_links">
                                         <h4>Global Variables</h4>
 
-                                        <code>originalGrayScaleData</code>
-                                        </code>Type: </code>
-                                        <p>description</p>
-
-                                        <code>pmiX</code>
-                                        </code>Type: </code>
-                                        <p>description</p>
-
-                                        <code>pmiY</code>
-                                        </code>Type: </code>
-                                        <p>description</p>
+                                        <p><code>originalGrayScaleData: </code>Array</p>
+                                        <p><code>pimX: </code>number</p>
+                                        <p><code>pimY: </code>number</p>
 
                                         <h4>Functions</h4>
                                         <ul>
@@ -385,74 +365,73 @@
                                 </div><!-- api_overview -->
 
                                 <div class="api_methods">
-                                    <h3 id="evaluateIntensity"><code>evaluateIntensity()</code></h3><br>
+                                    <h3 id="evaluateIntensity">
+                                        <code>evaluateIntensity(canvas, intensityThreshold)</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>Add description please</p>
+                                    <p>Changes the intensity of each pixel in the canvas.</p>
                                     <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
-
+                                    <p><code>canvas: </code>HTMLElement</p>
+                                    <p><code>intensityThreshold: </code>number</p>
                                     <h4>Return</h4>
                                     <code>None</code>
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
-                                    <h3 id="applyMinimumFilter"><code>applyMinimumFilter()</code></h3><br>
+                                    <h3 id="applyMinimumFilter"><code>applyMinimumFilter(canvas)</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>Add description please</p>
+                                    <p>Applies minimum filter to a specified canvas.</p>
                                     <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
-
+                                    <p><code>canvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
                                     <code>None</code>
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
-                                    <h3 id="getPMIIndex"><code>getPMIIndex()</code></h3><br>
+                                    <h3 id="getPMIIndex"><code>getPMIIndex(canvas)</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>Add description please</p>
+                                    <p>Calculates the PMI (pixel with minimum intensity) of <code>canvas</code>.</p>
                                     <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
+                                    <p><code>canvas: </code>HTMLElement</p>
+                                    <h4>Return</h4>
+                                    <p><code>pmiIndex: number </code>index of the PMI from
+                                        <code>originalGrayScaleData</code>.</p>
+                                </div><!-- api_methods -->
 
+                                <div class="api_methods">
+                                    <h3 id="getPupils"><code>getPupils(canvas, pmiIndex)</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Calculates pixel position of the pupil based on PMI</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>canvas: </code>HTMLElement</p>
+                                    <p><code>pmiIndex: </code>number</p>
+                                    <h4>Return</h4>
+                                    <p><code> number: [x,y]</code> x and y pupil coordinates.</p>
+                                </div><!-- api_methods -->
+
+                                <div class="api_methods">
+                                    <h3 id="drawPupilRegion"><code>drawPupilRegion(canvas, pupilX, pupilY)</code></h3><br>
+                                    <h4>Description</h4>
+                                    <p>Draws graphic on pupil.</p>
+                                    <h4>Parameters</h4>
+                                    <p><code>canvas: </code>HTMLElement</p>
+                                    <p><code>pupilX: </code>number</p>
+                                    <p><code>pupilY: </code>number</p>
                                     <h4>Return</h4>
                                     <code>None</code>
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
-                                    <h3 id="getPupils"><code>getPupils()</code></h3><br>
+                                    <h3 id="getAverageIntensity"><code>getAverageIntensity(grayScaleMatrix, x, y, size, canvas)</code></h3><br>
                                     <h4>Description</h4>
-                                    <p>Add description please</p>
+                                    <p>Calculates the average intensity in a (<code>size</code> x <code>size</code>) pixel square around the PMI</p>
                                     <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
-
+                                    <p><code>grayscaleMatrix: </code>Array</p>
+                                    <p><code>x: </code>number</p>
+                                    <p><code>y: </code>number</p>
+                                    <p><code>size: </code>number</p>
+                                    <p><code>canvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
-                                    <code>None</code>
-                                </div><!-- api_methods -->
-
-                                <div class="api_methods">
-                                    <h3 id="drawPupilRegion"><code>drawPupilRegion()</code></h3><br>
-                                    <h4>Description</h4>
-                                    <p>Add description please</p>
-                                    <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
-
-                                    <h4>Return</h4>
-                                    <code>None</code>
-                                </div><!-- api_methods -->
-
-                                <div class="api_methods">
-                                    <h3 id="getAverageIntensity"><code>getAverageIntensity()</code></h3><br>
-                                    <h4>Description</h4>
-                                    <p>Add description please</p>
-                                    <h4>Parameters</h4>
-                                    <code>{?} Add parameter name and type</code>
-                                    <p>Add description of parameter here</p>
-                                    <h4>Return</h4>
-                                    <code>None</code>
+                                    <p><code> number: </code> Average intensity around the PMI</p>
                                 </div><!-- api_methods -->
                             </div><!-- api_container -->
                         </section>
