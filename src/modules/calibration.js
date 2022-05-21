@@ -73,7 +73,7 @@ const drawCalibrationPoints = () => {
 }
 
 /** - Calibrate all points and store pupil coordinates
- * @param {interface} event The Event interface represents an event which takes place in the DOM.
+ * @param {Event} event The Event interface represents an event which takes place in the DOM.
  * */
 const calibrateAllPoints = (event) => {
     let keys = Object.keys(calibrationPoints)
@@ -142,7 +142,7 @@ const calibrateAllPoints = (event) => {
 }
 
 /** Storing pupil coordinates for calculating precision and analysis.
- * @param {attribute} pointID id of each of the 9 calibration points
+ * @param {string} pointID id of each of the 9 calibration points
  * @param {number} pupilX the X coordinate from the newPmiX variable define in script.js
  * @param {number} pupilY the Y coordinate from the newPmiY variable defined in script.js
  **/
@@ -150,8 +150,7 @@ const storePupilCoordinates = (pointID, pupilX, pupilY) => {
     let x = Math.round(pupilX)
     let y = Math.round(pupilY)
 
-    // let keys = Object.keys(userGazePoints)
-    let userPoints = [x,y]
+    const userPoints = [x,y]
 
     // Storing all points in userGazePoints object
     if (userGazePoints[pointID]["pupilPos"].length == 0) {
