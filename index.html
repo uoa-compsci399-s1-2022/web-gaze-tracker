@@ -1,117 +1,154 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Peeper.js</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="assets/css/main.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-xl">
-                <a class="navbar-brand" href="#">
-                    Peeper.js
-                    <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Peeper.js</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-xl">
+            <a class="navbar-brand" href="#">
+                Peeper.js
+                <img src="assets/images/nav-logo-eyes.png" alt="" width="30" height="30"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="#title">Home</a>
                     <a class="nav-link" href="example.html">Example</a>
-                    <a class="nav-link" href="#documentation">Documentation</a>
+                    <a class="nav-link" href="documentation.html">Documentation</a>
                     <a class="nav-link" href="#team">Contact</a>
-                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <section id="title">
-            <div class="container">
-                <h1 class="display-2 text-center">Peeper.js</h1>
-                <h3 class="text-center">Lightweight Javascript Gaze Tracker API</h3>
-            </div>
-        </section>
-        
-        <section id="example">
-            <div class="container">
-                <h2>Example</h2>
+    <section id="title">
+        <div class="container">
+            <h1 class="display-2 text-center">Peeper.js</h1>
+            <h3 class="text-center">Lightweight Javascript Gaze Tracker Library</h3>
+        </div>
+    </section>
+
+    <section id="Intro">
+        <div class="container">
+            <p>add intro here</p>
             <hr>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="documentation">
-            <div class="container">
-                <h2>Documentation</h2>
+    <section id="documentation">
+        <div class="container">
+            <h2>Documentation</h2>
+            <ul class="list-group">
+                <a href="documentation.html#calibration" class="list-group-item list-group-item-action">Calibration</a>
+                <a href="documentation.html#elements" class="list-group-item list-group-item-action">Elements</a>
+                <a href="documentation.html#eyeDetection" class="list-group-item list-group-item-action">Eye
+                    Detection</a>
+                <a href="documentation.html#imageProcessing" class="list-group-item list-group-item-action">Image
+                    Processing</a>
+                <a href="documentation.html#pupilDetection" class="list-group-item list-group-item-action">Pupil
+                    Detection</a>
+                <a href="documentation.html#mapping" class="list-group-item list-group-item-action">Mapping</a>
+            </ul>
             <hr>
-            </div>
-        </section>
-        
-        <section id="acknowledgement">
-            <div class="container">
-                <h2>Acknowledgements</h2>
-                <p>
-                    Peeper.js was developed by the students from the University of Auckland in the context of a capstone project with the aim of creating an open-source gaze-tracking library. The project task was proposed by  
-                      <a href="https://unidirectory.auckland.ac.nz/profile/g-weber">Dr. Gerald Weber</a> and was implemented based on different open source libraries and studies found on the web.
-                  </p>
-                  <p>
-                    The pupil extraction algorithm heavily relies on the Cumulative Distribution Function (CDF), found in the 
-                    <a href="https://arxiv.org/ftp/arxiv/papers/1202/1202.6517.pdf">"Pupil Location Using Webcam"</a> study.
-                  </p>
-                <hr>
-            </div>
-        </section>
+        </div>
+    </section>
+
+    <section id="acknowledgement">
+        <div class="container">
+            <h2>Acknowledgements</h2>
+            <p>
+                Peeper.js was developed by the students from the University of Auckland in the context of a capstone
+                project with the aim of creating an open-source gaze-tracking library. The project task was proposed by
+                <a href="https://unidirectory.auckland.ac.nz/profile/g-weber">Dr. Gerald Weber</a> and was implemented
+                based on different open source libraries and studies found on the web such as:
+            </p>
+            <ul>
+                <li><a href="https://justadudewhohacks.github.io/face-api.js/docs/index.html">Faceapi</a>
+                    - AI-powered Face Detection & Rotation Tracking, Face Description & Recognition, Age & Gender &
+                    Emotion Prediction for Browser and NodeJS using TensorFlow/JS. We used this <a
+                        href="https://youtu.be/CVClHLwv-4I">tutorial</a> to set up the inital script.
+                </li>
+                <li>
+                    <a href="https://opencv.org/">OpenCV</a> - an open source computer vision and machine learning
+                    software library.
+                </li>
+                <li>
+                    <a href="https://arxiv.org/ftp/arxiv/papers/1202/1202.6517.pdf">"Pupil Location Using
+                        Webcam"</a> - A study that outlines three different algorithms for detecting pupils
+                    from a webcam video feed.
+                </li>
+            </ul>
+            <hr>
+        </div>
+    </section>
 
 
-        <section id="team">
-            <div class="container">
-                <h2 id="team-heading">Dev Team</h2>
-                <div class="row">
-                <div class="col">
-                    <h4 class="text-center">Ricky Katafono</h4>
-                    <h3 class="text-center"><a href="https://github.com/Ricky-Kynd"><i class="bi bi-github"></i></a></h3>
-                </div>
+    <section id="team">
+        <div class="container">
+            <h2 id="team-heading">Dev Team</h2>
+            <div class="row">
                 <div class="col">
                     <h4 class="text-center">Amri Arshad</h4>
-                    <h3 class="text-center"><a href="https://github.com/AmriArshad"><i class="bi bi-github"></i></a></h3>
-                </div>
-                <div class="col">
-                    <h4 class="text-center">Vadim Reger</h4>
-                    <h3 class="text-center"><a href="https://github.com/terentiy8512"><i class="bi bi-github"></i></a></h3>
-                </div>
-                <div class="col">
-                    <h4 class="text-center">Kevin Ren</h4>
-                    <h3 class="text-center"><a href="https://github.com/kr0720"><i class="bi bi-github"></i></a></h3>
-                </div>
-                <div class="col">
-                    <h4 class="text-center">Theresa Lan</h4>
-                    <h3 class="text-center"><a href="https://github.com/NatRivers"><i class="bi bi-github"></i></a></h3>
+                    <h3 class="text-center"><a href="https://github.com/AmriArshad"><img class="img-thumbnail"
+                                src="https://github.com/AmriArshad.png"><i class="bi bi-github"></i></a></h3>
                 </div>
                 <div class="col">
                     <h4 class="text-center">Jacky Chen</h4>
-                    <h3 class="text-center"><a href="https://github.com/Jacky338"><i class="bi bi-github"></i></a></h3>
+                    <h3 class="text-center"><a href="https://github.com/Jacky338"><img class="img-thumbnail"
+                                src="https://github.com/Jacky338.png"><i class="bi bi-github"></i></a></h3>
                 </div>
+                <div class="col">
+                    <h4 class="text-center">Kevin Ren</h4>
+                    <h3 class="text-center"><a href="https://github.com/kr0720"><img class="img-thumbnail"
+                                src="https://github.com/kr0720.png" width="196"><i class="bi bi-github"></i></a></h3>
                 </div>
-                <hr>
+                <div class="col">
+                    <h4 class="text-center">Ricky Katafono</h4>
+                    <h3 class="text-center"><a href="https://github.com/Ricky-Kynd"><img class="img-thumbnail"
+                                src="https://github.com/Ricky-Kynd.png"><i class="bi bi-github"></i></a></h3>
+                </div>
+                <div class="col">
+                    <h4 class="text-center">Theresa Lan</h4>
+                    <h3 class="text-center"><a href="https://github.com/NatRivers"><img class="img-thumbnail"
+                                src="https://github.com/NatRivers.png"><i class="bi bi-github"></i></a></h3>
+                </div>
+                <div class="col">
+                    <h4 class="text-center">Vadim Reger</h4>
+                    <h3 class="text-center"><a href="https://github.com/terentiy8512"><img class="img-thumbnail"
+                                src="https://github.com/terentiy8512.png"><i class="bi bi-github"></i></a></h3>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <section id="footer">
+        <div class="container">
+            <h2 class="text-center">License</h2>
+            <p class="text-center">
+                Copyright © 2022 <a href="https://www.auckland.ac.nz">The University of Auckland</a>
+                <br>
+                Licensed under <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a>.
+            </p>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
 
-        <section id="footer">
-            <div class="container">
-                <h2 class="text-center">License</h2>
-                <p class="text-center">
-                    Copyright © 2022 <a href="https://www.auckland.ac.nz">The University of Auckland</a>
-                    <br>
-                    Licensed under <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a>.
-                </p>
-            </div>
-        </section>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    </body>
 </html>
