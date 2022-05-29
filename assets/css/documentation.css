@@ -28,28 +28,28 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
-#sidebar-scroll{
+#sidebar-scroll {
   height: 100%;
   overflow-y: scroll;
 }
 
-.logo{
+.logo {
   font-size: 40px;
   padding-left: 20px;
-  color:#ddd;
+  color: #ddd;
   text-decoration: none;
   font-family: Papyrus;
 }
@@ -70,35 +70,35 @@ h1 {
   margin-top: 30px;
 }
 
-.sidebar-nav{
+.sidebar-nav {
   padding: 0;
   list-style: none;
 }
 
-.sidebar-nav h3{
+.sidebar-nav h3 {
   text-indent: 20px;
   line-height: 40px;
 }
 
-.sidebar-nav li{
+.sidebar-nav li {
   text-indent: 20px;
   line-height: 40px;
 }
 
-.sidebar-nav h3{
+.sidebar-nav h3 {
   display: block;
   text-decoration: none;
   color: #ddd;
 }
 
-.sidebar-nav li a{
+.sidebar-nav li a {
   display: block;
   text-decoration: none;
   color: #ddd;
   font-size: 14px;
 }
 
-.sidebar-nav li a:hover{
+.sidebar-nav li a:hover {
   background: #d63384;
 }
 

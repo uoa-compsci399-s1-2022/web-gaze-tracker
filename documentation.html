@@ -281,9 +281,7 @@
                                     <p><code>detections: </code>any</p>
                                     <p><code>leftCanvas: </code>HTMLElement</p>
                                     <h4>Return</h4>
-                                    <p>
-                                        <code> number: [x,y]</code> x and y value of the left eye <br>
-                                    </p>
+                                    <p><code>none</code></p>
                                 </div><!-- api_methods -->
 
                                 <div class="api_methods">
@@ -292,13 +290,13 @@
                                     </h3><br>
                                     <h4>Description</h4>
                                     <p> Finds the starting and ending x, y coordinates of a bounding box around the
-                                        eyes.*</p>
+                                        eyes.</p>
                                     <h4>Parameters</h4>
                                     <p><code>eye: </code>Object</p>
                                     <p><code>padding: </code>number</p>
                                     <h4>Return</h4>
                                     <p>
-                                        <code> Array: [x,y]</code> Array of x, y value of the left eye
+                                        <code> x, y </code> x, y value of the left eye
                                     </p>
                                 </div><!-- api_methods -->
 
@@ -471,13 +469,12 @@
 
                                 <div class="api_methods">
                                     <h3 id="getPositions">
-                                        <code>getPositions(canvas, pupilX, pupilY)</code>
+                                        <code>getPositions(pupilX, pupilY)</code>
                                     </h3><br>
                                     <h4>Description</h4>
                                     <p>Returns relevant information regarding user's gaze and boundaries based off
                                         calibration.</p>
                                     <h4>Parameters</h4>
-                                    <p><code>canvas: </code>HTMLElement</p>
                                     <p><code>pupilX: </code>number</p>
                                     <p><code>pupilY: </code>number</p>
                                     <h4>Return</h4>
@@ -487,11 +484,12 @@
 
                                 <div class="api_methods">
                                     <h3 id="drawMapping">
-                                        <code>drawMapping(cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart)</code>
+                                        <code>drawMapping(canvas, cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart)</code>
                                     </h3><br>
                                     <h4>Description</h4>
                                     <p>Draws the user's gaze as a circle on the browser.</p>
                                     <h4>Parameters</h4>
+                                    <p><code>canvas: </code>HTMLElement</p>
                                     <p><code>cursorX: </code>number</p>
                                     <p><code>cursorY: </code>number</p>
                                     <p><code>screenWidth: </code>number</p>

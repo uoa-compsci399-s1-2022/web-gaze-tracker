@@ -1,5 +1,5 @@
 import { drawCroppedCanvas } from './modules/eyeDetection.js'
-import { clearCanvas, grayscaleCanvas, croppedCanvasLeft, video, sliderIT, sliderITtext, mappingCanvas } from './modules/elements.js'
+import { clearCanvas, grayscaleCanvas, croppedCanvasLeft, video, sliderIT, sliderITtext, mappingCanvas, menu, openMenu } from './modules/elements.js'
 import { applyImageProcessing } from './modules/imageProcessing.js'
 import { applyMinimumFilter, drawPupilRegion, evaluateIntensity, getPMIIndex, getPupils } from './modules/pupilDetection.js'
 import { startCalibration, userGazePoints } from './modules/calibration.js'
@@ -16,7 +16,6 @@ document.body.appendChild(video)
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('assets/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('assets/models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('assets/models')
 ]).then(startVideo)
 
 function startVideo() {
@@ -42,6 +41,10 @@ video.addEventListener('play', () => {
 
     startCalibration()
 
+    // display settings menu
+    document.body.appendChild(openMenu)
+    document.body.appendChild(menu)
+
     // Main loop where face detection and eye tracking takes place.
     // Repeats every 30 ms
     setInterval(async () => {
@@ -58,6 +61,7 @@ video.addEventListener('play', () => {
             document.body.append(croppedCanvasLeft)
             document.body.append(grayscaleCanvas)
             document.body.append(mappingCanvas)
+
 
             // Eye detection
             drawCroppedCanvas(detections, croppedCanvasLeft)
@@ -80,17 +84,16 @@ video.addEventListener('play', () => {
 
                 // mapping to the screen
                 if (userGazePoints.calibrationComplete) {
-                    const [cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart] = getPositions(mappingCanvas, pupilX, pupilY)
+                    const [cursorX, cursorY, screenWidth, screenHeight, yScreenStart, xScreenStart] = getPositions(pupilX, pupilY)
                     globalList.push([cursorX, cursorY])
                     let numberOfSavedElements = 3
-                    if (globalList.length === numberOfSavedElements){
+                    if (globalList.length === numberOfSavedElements) {
                         let avgX = 0
                         let avgY = 0
-                        for(let i=0; i<globalList.length; i++){
-                            avgX+=globalList[i][0]
-                            avgY+=globalList[i][1]
+                        for (let i = 0; i < globalList.length; i++) {
+                            avgX += globalList[i][0]
+                            avgY += globalList[i][1]
                         }
-                        console.log(globalList)
                         globalList = []
 
                         avgX = parseInt(avgX / numberOfSavedElements)
