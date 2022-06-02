@@ -49,7 +49,9 @@ TBA
 
 ## Credits
 Client: Dr. Gerald Weber
+
 Lecturer and coordinator: Asma Shakil
+
 Teaching Assistant: Anshul Jain
 
 Team members:
