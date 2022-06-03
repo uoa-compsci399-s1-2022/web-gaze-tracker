@@ -35,12 +35,21 @@ $ cd web-gaze-tracker/example
 This folder contains the example HTML page, required modules/libraries, a peeper.js build file and a main.js file which calls relevant functions in the correct order. This folder is independent of the other files in the repo and can be moved to your desired location.
 
 ## Usage Examples
-TBA
+Open example.html in VS Code with the live server extension or alternatively use [Node.js](https://nodejs.org/en/download/)
+
+Install `http-server` and then open a live server.
+```shell
+$ npm install http-server -g
+$ http-server -p 5000
+```
+Now navigate to http://127.0.0.1:5000/example.html to access the example page locally.
+
+If you wish to visit our deployed example page, you can do so with the link below.
 
 ## [Website](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/)
 [Documentation](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/documentation.html)
 
-[Example](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/example.html)
+[Example](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/example/example.html)
 
 ### What are some of the features you hope to implement in the future?
 - More accurate calibration/mapping algorithm
