@@ -36,12 +36,11 @@ const evaluateIntensity = (canvas, intensityThreshold) => {
  * @param {HTMLElement} canvas canvas to apply filter to
  */
 const applyMinimumFilter = (canvas) => {
-  // minimim filter applied (SEARCH FOR MORE FILTERS TO APPLY)
   const src = cv.imread(canvas.id)
   let dst = new cv.Mat()
   let M = cv.Mat.ones(5, 5, cv.CV_8U)
   let anchor = new cv.Point(-1, -1)
-  // You can try more different parameters
+
   cv.erode(src, dst, M, anchor, 2, cv.BORDER_ISOLATED, cv.morphologyDefaultBorderValue())
   cv.imshow(canvas.id, dst)
   src.delete()
@@ -49,11 +48,11 @@ const applyMinimumFilter = (canvas) => {
   M.delete()
 }
 
-/** Calculates pixel position of the pupil based on PMI
+/** Calculates the PMI (pixel with minimum intensity) of given canvas
 *
 * @param {HTMLElement} canvas canvas to get PMI from
 *
-* @return {number} x and y position of pupils
+* @return {number} index of the PMI from originalGrayScaleData
 */
 const getPMIIndex = (canvas) => {
   // Getting image data after application of minimum filter
@@ -140,30 +139,9 @@ const getPupils = (canvas, pmiIndex) => {
 *
 */
 const drawPupilRegion = (canvas, pupilX, pupilY) => {
-  // coordinates for main image
-  // mainImageColumn = leftStartX + padding + column / leftDisX
-  // mainImageRow = leftStartY - padding + row / leftDisY
-  // console.log(row, column, mainImageRow, mainImageColumn)
-
   // drawing squares around pmi
   let ctx = canvas.getContext("2d")
   ctx.lineWidth = 2
-
-  // ctx.beginPath()
-  // ctx.strokeStyle = 'blue'
-  // ctx.rect(pmiX - 50, pmiY - 50, 100, 100)
-  // ctx.stroke()
-
-  // ctx.beginPath()
-  // ctx.strokeStyle = 'purple'
-  // ctx.rect(pmiX - 35, pmiY - 35, 70, 70)
-  // ctx.stroke()
-
-  // // pmi before
-  // ctx.beginPath()
-  // ctx.strokeStyle = 'green'
-  // ctx.arc(pmiX, pmiY, 2, 0, 2 * Math.PI)
-  // ctx.stroke()
 
   // pmi after the averageIntesity calculations
   ctx.beginPath()

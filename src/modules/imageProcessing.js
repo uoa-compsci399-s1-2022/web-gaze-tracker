@@ -4,7 +4,7 @@
 * @param {HTMLElement} debugCanvas debugging canvas
 */
 const applyImageProcessing = (canvas, debugCanvas) => {
-  // OpenCV adaptive threshold filter applied to the video 
+  // convert image to grayscale and apply to 2 canvases
   const imgSrc = cv.imread(canvas.id)
   let dst = new cv.Mat()
   cv.cvtColor(imgSrc, dst, cv.COLOR_RGBA2GRAY, 0)
