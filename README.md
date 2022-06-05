@@ -14,18 +14,42 @@ Peeper.js is written completely in JavaScript for easy integration with websites
 AI-powered Face Detection & Rotation Tracking, Face Description & Recognition, Age & Gender & Emotion Prediction for Browser and NodeJS using TensorFlow/JS
 
 ### [OpenCV](https://opencv.org/)
-OpenCV (Open Source Computer Vision Library) is an open source computer vision and machine learning software library. OpenCV was built to provide a common infrastructure for computer vision applications and to accelerate the use of machine perception in the commercial products
+OpenCV (Open Source Computer Vision Library) is an open source computer vision and machine learning software library. OpenCV was built to provide a common infrastructure for computer vision applications and to accelerate the use of machine perception in commercial products
 
 ## Installation and Setup
-TBA
+
+### Depedencies (included)
+
+- OpenCV 4.5.0
+- Face-api 0.22.2
+	- Tiny Face Detector
+	- 68 Point Face Landmark Detection
+
+Clone or download the repo and navigate to the "example" folder.
+
+```shell
+$ git clone https://github.com/uoa-compsci399-s1-2022/web-gaze-tracker.git
+$ cd web-gaze-tracker/example
+```
+
+This folder contains the example HTML page, required modules/libraries, a peeper.js build file and a main.js file which calls relevant functions in the correct order. This folder is independent of the other files in the repo and can be moved to your desired location.
 
 ## Usage Examples
-TBA
+Open example.html in VS Code with the live server extension or alternatively use [Node.js](https://nodejs.org/en/download/)
+
+Install `http-server` and then open a live server.
+```shell
+$ npm install http-server -g
+$ http-server -p 5000
+```
+Now navigate to http://127.0.0.1:5000/example.html to access the example page locally.
+
+If you wish to visit our deployed example page, you can do so with the link below.
 
 ## [Website](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/)
 [Documentation](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/documentation.html)
 
-[Example](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/example.html)
+[Example](https://uoa-compsci399-s1-2022.github.io/web-gaze-tracker/example/example.html)
 
 ### What are some of the features you hope to implement in the future?
 - More accurate calibration/mapping algorithm
@@ -34,7 +58,10 @@ TBA
 
 ## Credits
 Client: Dr. Gerald Weber
+
 Lecturer and coordinator: Asma Shakil
+
+Teaching Assistant: Anshul Jain
 
 Team members:
 - Amri Arshad

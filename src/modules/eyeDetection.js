@@ -6,8 +6,9 @@
  * 
  */
 const drawCroppedCanvas = (detections, leftCanvas) => {
-  // get left and right eye
+  // get left eye
   const leftEye = detections[0].landmarks.getLeftEye()
+  // const right eye = detections[1].landmarks.getLeftEye()
   const padding = 5
 
   const [leftStartX, leftStartY, leftDisX, leftDisY] = calculateStartAndDistance(leftEye, padding)
@@ -23,12 +24,12 @@ const drawCroppedCanvas = (detections, leftCanvas) => {
 }
 
 /**
- * Finds the starting and ending x,y coordinates from the left eye to the right eye.
+ * Finds the starting and ending x, y coordinates of a bounding box around the eyes.
  * 
  * @param {Object}  eye eye variable is a dictionary of x and y coordinates
  * @param {number}  padding padding added to image
  * 
- * @return {number} Returns an array of [startX, startY, disX, disY]
+ * @return {number} Returns startX, startY, disX, disY
  */
 const calculateStartAndDistance = (eye, padding) => {
 
@@ -36,16 +37,16 @@ const calculateStartAndDistance = (eye, padding) => {
   const EyeXcoord = eye.map(i => i.x)
   const EyeYcoord = eye.map(i => i.y)
 
-  let minX = Math.min(...EyeXcoord) - padding
-  let minY1 = Math.min(...EyeYcoord)
-  let maxY1 = Math.max(...EyeYcoord)
+  const minX = Math.min(...EyeXcoord) - padding
+  const minY1 = Math.min(...EyeYcoord)
+  const maxY1 = Math.max(...EyeYcoord)
 
-  let maxX = Math.max(...EyeXcoord) + padding
-  let minY2 = Math.min(...EyeYcoord)
-  let maxY2 = Math.max(...EyeYcoord)
+  const maxX = Math.max(...EyeXcoord) + padding
+  const minY2 = Math.min(...EyeYcoord)
+  const maxY2 = Math.max(...EyeYcoord)
 
-  let minY = Math.min(minY1, minY2) - padding
-  let maxY = Math.max(maxY1, maxY2) + padding
+  const minY = Math.min(minY1, minY2) - padding
+  const maxY = Math.max(maxY1, maxY2) + padding
 
   return [minX, minY, maxX - minX, maxY - minY]
 }

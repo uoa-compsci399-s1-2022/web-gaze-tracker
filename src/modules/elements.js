@@ -1,32 +1,28 @@
-// HTML elements
-
-
-/** Creates a sidebar settings menu to change canvas image processing **/ 
+// settings menu
 const menu = document.createElement("div");
 menu.id = "mySidenav"
 menu.className = "sidenav"
 
-// --- Open sidenav functionality ---
+// Open sidenav functionality
 const openNav = () => { document.getElementById("mySidenav").style.display = "block" }
 
-// create open sidenav button
+// open sidenav button
 const openMenu = document.createElement("button")
 openMenu.id = 'menuButton'
 openMenu.innerHTML = "SETTINGS"
 openMenu.addEventListener('click', openNav)
-document.body.appendChild(openMenu)
 
-// --- Close sidenav functionality ---
+// Close sidenav functionality 
 const closeNav = () => { document.getElementById("mySidenav").style.display = "none" }
 
-// create Close sidenav button
+// Close sidenav button
 const menuCloseButton = document.createElement("a")
 menuCloseButton.href = "javascript:void(0)"
 menuCloseButton.className = "closebtn"
 menuCloseButton.addEventListener('click', closeNav)
 menuCloseButton.innerHTML = "&times;"
 
-// --- Create menu items prefixed with "slider" and functionality name; e.g, sliderIT ---
+// Create menu items prefixed with "slider" and functionality name; e.g, sliderIT
 
 // SliderIT for intensity threshold (IT)
 const sliderIT = document.createElement("input")
@@ -41,15 +37,13 @@ const sliderITtext = document.createElement("p")
 sliderITtext.className = 'menuText'
 sliderITtext.innerHTML = "Intensity Threshold"
 
-// --- Append main Settings menu html elements
+// Append main Settings menu html elements
 menu.appendChild(sliderITtext)
 menu.appendChild(sliderIT)
 menu.appendChild(menuCloseButton)
-document.body.appendChild(menu)
 
 
-
-/** Creates video elements used for image processing **/ 
+// video elements used for image processing
 const video = document.createElement("VIDEO")
 video.id = "video"
 video.width = 750
@@ -92,4 +86,4 @@ const clearCanvas = (canvas) => {
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 }
 
-export { sliderIT, sliderITtext, video, croppedCanvasLeft, grayscaleCanvas, clearCanvas, mappingCanvas }
+export { openMenu, menu, sliderIT, sliderITtext, video, croppedCanvasLeft, grayscaleCanvas, clearCanvas, mappingCanvas }
